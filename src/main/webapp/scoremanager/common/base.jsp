@@ -14,8 +14,7 @@
 	integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
 	crossorigin="anonymous">
 <title>${param.title}</title>
-<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-${param.scripts}
+<script src="https://code.jquery.com/jquery-3.2.1.min.js">${param.scripts}</script>
 </head>
 <body>
 	<div id="wrapper" class="container">
