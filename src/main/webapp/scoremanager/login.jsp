@@ -7,10 +7,12 @@
     </c:param>
 
     <c:param name="scripts"></c:param>
+    <c:param name="styles">
+    </c:param>
 
     <c:param name="content">
-		<section >
-		
+		<section class="login-form">
+			テスト
 		</section>
     </c:param>
 </c:import>
