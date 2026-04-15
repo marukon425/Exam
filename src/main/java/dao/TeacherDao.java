@@ -4,13 +4,15 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+import bean.School;
 import bean.Teacher;
 
 
 public class TeacherDao extends Dao {
     public Teacher search(String login, String password)
             throws Exception {
-    		Teacher customer = null;
+    		Teacher teacher = null;
+    		School school = null;
 
             Connection con = getConnection();
 
@@ -22,10 +24,14 @@ public class TeacherDao extends Dao {
             ResultSet rs = st.executeQuery();
 
             while (rs.next()) {
-                customer = new Teacher();
-                customer.setId(rs.getString("ID"));
-                customer.setPassword(rs.getString("PASSWORD"));
-                customer.setName(rs.getString("NAME"));
+            	teacher = new Teacher();
+            	school = new School();
+            	school.setCd(rs.getString("SCHOOL_CD"));
+            	teacher.setId(rs.getString("ID"));
+            	teacher.setPassword(rs.getString("PASSWORD"));
+            	teacher.setName(rs.getString("NAME"));
+                teacher.setSchool(school);
+                
                 //customer.setName(rs.getString("NAME"));
                 // school が別テーブルならここではセットしない
             }
@@ -33,7 +39,7 @@ public class TeacherDao extends Dao {
 
             st.close();
             con.close();
-            return customer;
+            return teacher;
         }
 
 }
