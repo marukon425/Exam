@@ -29,7 +29,7 @@
 				<%-- ログイン済みの場合 --%>
 				<c:when test="${user.isAuthenticated()}">
 					<nav class="col-3" style="height:40rem;">
-						<c:import url="/common/navigation.jsp" />
+						<c:import url="/scoremanager/common/navigation.jsp" />
 					</nav>
 					<main class="col-9 border-start"> ${param.content} </main>
 				</c:when>
