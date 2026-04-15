@@ -30,11 +30,12 @@ public class FrontController extends HttpServlet {
             // アクションクラスのインスタンスを生成
             Action action = (Action) Class.forName(name).getDeclaredConstructor().newInstance();
 
+            String url = action.execute(req, res);
             // 処理を実行
             action.execute(req, res);
             // String url = action.execute(req, res);
             // req.getRequestDispatcher(url).forward(req, res);
-
+            req.getRequestDispatcher(url).forward(req, res);
         } catch (Exception e) {
         	System.out.println(e);
             e.printStackTrace();
