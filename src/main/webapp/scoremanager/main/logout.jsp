@@ -20,7 +20,7 @@
 
 
 			<div class="mt-3 px-4">
-			    <a href="Login.action">ログイン</a>
+			    <a href="../login.jsp">ログイン</a>
 			</div>
 
         </section>
