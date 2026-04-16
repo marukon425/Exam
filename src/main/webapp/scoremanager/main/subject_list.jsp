@@ -12,11 +12,10 @@
 		<section class="me-4">
             <h2 class="h3 mb-3 fw-norma bg-secondary bg-opacity-10 py-2 px-4">科目管理</h2>
             <div class="my-2 text-end px-4">
-            	<a href="">新規登録</a>
-            </div>
-            <%-- 
+            	<a href="subject_create.jsp">新規登録</a>
+            </div> 
             <c:choose>
-            	<c:when test="">--%>
+            	<c:when test="${subjects.size()>0 }">
 	            	<table class="table table-hover">
 	            		<tr>
 	            			<th>科目コード</th>
@@ -24,20 +23,20 @@
 	            			<th></th>
 	            			<th></th>
 	            		</tr>
-	            		<%--<c:forEach var="" items=""> --%>
+	            		<c:forEach var="subject" items="${subjects }">
 		            		<tr>
-		            			<td></td>
-		            			<td></td>
-		            			<td><a href="">変更</a></td>
-		            			<td><a href="">削除</td>
+		            			<td>${subject.cd }</td>
+		            			<td>${subject.name }</td>
+		            			<td><a href="subject_update.jsp">変更</a></td>
+		            			<td><a href="subject_delete.jsp">削除</td>
 		            		</tr>
-		            	<%--</c:forEach> --%>
+		            	</c:forEach>
 	            	</table>
-	           <%-- </c:when>
+	           </c:when>
             	<c:otherwise>
                     <div>科目情報が存在しませんでした。</div>
                 </c:otherwise>
-            </c:choose>--%>
+            </c:choose>
         </section>    
 	</c:param>
 </c:import>
