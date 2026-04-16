@@ -15,7 +15,8 @@
             <form style="margin : 20px ;" method="get">
 				<div class="col-4">
 					<label class="form-label" for="student-f1-select">入学年度</label>
-                    <select style="width:300%" class="form-select" name="">
+                    <select style="width:300%" class="form-select" name="ent_year">
+                    	<option class="" value="2024">2024</option>
                         <option class="" value="0">--------</option>
                         <%-- <c:forEach var="year" items="${ent_year_set }">
                             <option value="${year}" <c:if test="${year==f1 }">selected</c:if>>${year }</option>
@@ -25,17 +26,19 @@
 				
 				<div class="col-4">
                     <label class="form-label" name="">学生番号</label>
-                    <input type="text" style="width:300%; padding: 7px 7px; border-radius: 5px;  border: 1px solid #ced4da;" placeholder="学生番号を入力してください" class="form-input" name="">
+                    <input type="text" style="width:300%; padding: 7px 7px; border-radius: 5px;  border: 1px solid #ced4da;" placeholder="学生番号を入力してください" class="form-input" name="no">
                 </div>
                 
                 <div class="col-4">
                     <label class="form-label">氏名</label>
-                    <input type="text" style="width:300%; padding: 7px 7px; border-radius: 5px;  border: 1px solid #ced4da;" placeholder="氏名を入力してください" class="form-input" name="">
+                    <input type="text" style="width:300%; padding: 7px 7px; border-radius: 5px;  border: 1px solid #ced4da;" placeholder="氏名を入力してください" class="form-input" name="name">
                 </div>  
                 
                 <div class="col-4">
                     <label class="form-label" for="student-f2-select">クラス</label>
-                    <select style="width:300%"  class="form-select" name="">
+                    <select style="width:300%"  class="form-select" name="class_num">
+                    <option class="" value="102">102</option>
+                    <option class="" value="0">--------</option>
                         <%--<c:forEach var="num" items="${class_num_set }">
                             <option value="${num }" <c:if test="${num==f2 }">selected</c:if>>${num }</option>
                         </c:forEach> --%>
