@@ -90,23 +90,56 @@
             </form>
           </div>
         </div>
-
-        <!-- エラーメッセージ -->
-        <div class="row">
-          <div class="col-12 mt-2">
-            <c:if test="${not empty errors and not empty errors['f1']}">
-              <div class="text-warning">${fn:escapeXml(errors['f1'])}</div>
-            </c:if>
-          </div>
-        </div>
-      </div>
-
-      <!-- 検索結果メッセージ -->
-      <c:if test="${not empty resultMessage}">
-        <div class="alert alert-info" role="status">
-          <strong>検索結果:</strong> ${fn:escapeXml(resultMessage)}
-        </div>
-      </c:if>
     </section>
+      <div>
+      <label>科目：情報処理基礎知識Ⅰ</label>
+      </div>
+      <style>
+      table tr{
+      height:50px;
+      }
+      </style>
+      <table style="width: 100%; ">
+      	<tr>
+	      	<th>入学年度</th>
+	      	<th>クラス</th>
+	      	<th>学生番号</th>
+	      	<th>氏名</th>
+	      	<th>1個</th>
+	      	<th>2個</th>
+      	</tr>
+      	<tr>
+      		<td>2021</td>
+      		<td>201</td>
+      		<td>2125001</td>
+      		<td>大原 一郎</td>
+      		<td>10</td>
+      		<td>-</td>
+      	</tr>
+      	<tr>
+      		<td>2021</td>
+      		<td>201</td>
+      		<td>2125002</td>
+      		<td>大原 花子</td>
+      		<td>79</td>
+      		<td>-</td>
+      	</tr>
+      	<tr>
+      		<td>2021</td>
+      		<td>201</td>
+      		<td>2125003</td>
+      		<td>大原 良子</td>
+      		<td>50</td>
+      		<td>-</td>
+      	</tr>
+      	<tr>
+      		<td>2021</td>
+      		<td>201</td>
+      		<td>2125004</td>
+      		<td>大原 二郎</td>
+      		<td>89</td>
+      		<td>-</td>
+      	</tr>
+      </table>
   </c:param>
 </c:import>
