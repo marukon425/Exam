@@ -264,7 +264,8 @@ public class StudentDao extends Dao {
 
         return list;
     }
-
+    
+    // sqlの判定をしている
 	public boolean save(Student student) throws Exception {
 	    // 1. 変数の宣言
 	    String sql;
