@@ -28,7 +28,7 @@ public class SubjectCreateExcecuteAction extends Action {
 		if(!resuit) {
 			
 		}
-		return "/subject_create_done.jsp";
+		return "subject_create_done.jsp";
 		
 	}
 }
