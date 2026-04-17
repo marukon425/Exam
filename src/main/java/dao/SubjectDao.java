@@ -137,6 +137,53 @@ public class SubjectDao extends Dao {
         return list;
 	}
 	
+	
+	public boolean subject_insert(School school, String cd, String name)throws Exception{
+		Connection connection=getConnection();
+		
+		PreparedStatement statement = null;
+		connection.setAutoCommit(false);
+	    // SQL文のソート
+	    String insert1 = "insert into subject values(";
+	    String insert2 = ",?,?)";
+	        
+    	try {
+        	// プリペアードステートメントにSQL文をセット
+            statement = connection.prepareStatement(insert1+ "(" + baseSql +")"+ insert2 );
+            // プリペアードステートメントに科目コードをバインド
+            statement.setString(1, school.getCd());
+            statement.setString(2, cd);
+            statement.setString(3, name);
+            // プリペアードステートメントを実行
+            int line = statement.executeUpdate();
+            
+           
+        }catch (Exception e) {
+            throw e;
+        } finally {
+            // プリペアードステートメントを閉じる
+            if (statement != null) {
+                try {
+                    statement.close();
+                } catch (SQLException sqle) {
+                    throw sqle;
+                }
+            }
+            // コネクションを閉じる
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException sqle) {
+                    throw sqle;
+                }
+            }
+            
+        }
+
+        return true;
+	}
+		
+	
 	public boolean save(Subject subject) throws Exception {
 	    // 1. 変数の宣言
 	    String sql;
