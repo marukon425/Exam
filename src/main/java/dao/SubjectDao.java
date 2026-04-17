@@ -159,7 +159,7 @@ public class SubjectDao extends Dao {
 	            }
 	        } else {
 	            // 存在する場合は UPDATE
-	            sql = "update student set name=?, ent_year=?, class_num=?, is_attend=? where no=?";
+	            sql = "update subject set name=?, ent_year=?, class_num=?, is_attend=? where no=?";
 	            try (PreparedStatement statement = connection.prepareStatement(sql)) {
 	            	statement.setString(1, subject.getCd());
 	                statement.setString(2, subject.getName());
@@ -181,6 +181,30 @@ public class SubjectDao extends Dao {
 	        // 実行件数が0件の場合
 	        return false;
 	    }
+	    
+	  
 	}
+	
+
+	public boolean delete(String cd) throws Exception {
+
+
+	    String sql = "delete from subject where cd=?";
+
+
+	    try (Connection connection = getConnection();
+	         PreparedStatement statement = connection.prepareStatement(sql)) {
+
+
+	        statement.setString(1, cd);
+
+
+	        int count = statement.executeUpdate();
+
+
+	        return count > 0;
+	    }
+	}
+
 	
 }
