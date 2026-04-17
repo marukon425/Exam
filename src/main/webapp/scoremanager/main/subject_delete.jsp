@@ -18,11 +18,11 @@
 				
 			     
 			 
-			  <form action="" method="post">
+	<form action="" method="post">
         <input type="hidden" name="" value="">
         <input type="hidden" name="" value="">
         <input type="submit" value="削除" style="background-color: red; color: white; border: none; border-radius: 5px; padding: 7px 12px;"><br><br><br>
-      </form>
+    </form>
 			 
 
 			
