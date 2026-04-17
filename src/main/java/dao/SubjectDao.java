@@ -138,24 +138,22 @@ public class SubjectDao extends Dao {
 	}
 	
 	
-	public boolean subject_insert(School school, String cd, String name)throws Exception{
-		Connection connection=getConnection();
-		
-		PreparedStatement statement = null;
-		connection.setAutoCommit(false);
-	    // SQL文のソート
-	    String insert1 = "insert into subject values(";
-	    String insert2 = ",?,?)";
+	public boolean subject_insert(School school, String cd, String name) throws Exception {
+	    Connection connection = getConnection();
+	    PreparedStatement statement = null;
+	    int count = 0;
+
+	    String sql = "insert into subject (school_cd, cd, name) values (?, ?, ?)";
 	        
-    	try {
-        	// プリペアードステートメントにSQL文をセット
-            statement = connection.prepareStatement(insert1+ "(" + baseSql +")"+ insert2 );
-            // プリペアードステートメントに科目コードをバインド
-            statement.setString(1, school.getCd());
-            statement.setString(2, cd);
-            statement.setString(3, name);
+	    try {
+	        statement = connection.prepareStatement(sql);
+	        // パラメータのセット
+	        statement.setString(1, school.getCd());
+	        statement.setString(2, cd);
+	        statement.setString(3, name);
+    	
             // プリペアードステートメントを実行
-            int line = statement.executeUpdate();
+            count = statement.executeUpdate();
             
            
         }catch (Exception e) {
@@ -180,7 +178,7 @@ public class SubjectDao extends Dao {
             
         }
 
-        return true;
+        return count<0;
 	}
 		
 	
@@ -206,7 +204,7 @@ public class SubjectDao extends Dao {
 	            }
 	        } else {
 	            // 存在する場合は UPDATE
-	            sql = "update student set name=?, ent_year=?, class_num=?, is_attend=? where no=?";
+	            sql = "update subject set cd=?, name=?";
 	            try (PreparedStatement statement = connection.prepareStatement(sql)) {
 	            	statement.setString(1, subject.getCd());
 	                statement.setString(2, subject.getName());
