@@ -23,14 +23,19 @@
 	            			<th></th>
 	            			<th></th>
 	            		</tr>
-	            		<c:forEach var="subject" items="${subjects }">
-		            		<tr>
-		            			<td>${subject.cd }</td>
-		            			<td>${subject.name }</td>
-		            			<td><a href="subject_update.jsp">変更</a></td>
-		            			<td><a href="subject_delete.jsp">削除</td>
-		            		</tr>
-		            	</c:forEach>
+						<c:forEach var="subject" items="${subjects}">
+						    <tr>
+						        <td>${subject.cd}</td>
+						        <td>${subject.name}</td>
+						        <td><a href="subject_update.jsp">変更</a></td>
+						        <td>
+						            <a href="SubjectDelete.action?cd=${subject.cd}">
+						                削除
+						            </a>
+						        </td>
+						    </tr>
+						</c:forEach>
+
 	            	</table>
 	           </c:when>
             	<c:otherwise>
