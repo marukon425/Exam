@@ -14,14 +14,14 @@
 	integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
 	crossorigin="anonymous">
 <title>${param.title}</title>
-<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-${param.scripts}
+<script src="https://code.jquery.com/jquery-3.2.1.min.js">${param.scripts}</script>
+<style>${param.styles}</style>
 </head>
 <body>
 	<div id="wrapper" class="container">
 		<header
 			class="d-flex flex-wrap justify-content-center py-3 px-5 mb-4 border-bottom border-2 bg-primary bg-opacity-10 bg-gradient">
-			<c:import url="/scoremanager/common/header.jsp" />
+			<c:import url="/scoremanager/main/common/header.jsp" />
 		</header>
 
 		<div class="row justify-content-center">
@@ -29,7 +29,7 @@ ${param.scripts}
 				<%-- ログイン済みの場合 --%>
 				<c:when test="${user.isAuthenticated()}">
 					<nav class="col-3" style="height:40rem;">
-						<c:import url="/common/navigation.jsp" />
+						<c:import url="/scoremanager/main/common/navigation.jsp" />
 					</nav>
 					<main class="col-9 border-start"> ${param.content} </main>
 				</c:when>
@@ -40,7 +40,7 @@ ${param.scripts}
 			</c:choose>
 		</div>
 		<footer class="py-2 my-4 bg-dark bg-opacity-10 border-top border-3 align-bottom">
-			<c:import url="/scoremanager/common/footer.jsp" />
+			<c:import url="/scoremanager/main/common/footer.jsp" />
 		</footer>
 
 	</div>

@@ -30,6 +30,10 @@ public class Teacher extends User implements Serializable {
     public String getId() {
         return id;
     }
+    
+    public String getName() {
+        return name;
+    }
 
     public School getSchool() {
         return school;
@@ -40,5 +44,14 @@ public class Teacher extends User implements Serializable {
     }
     public void setId(String id) {
         this.id = id;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+    public void setLogin(String id) {
+        this.id = id;
+    }
+    public void setPassword(String password) {
+        this.id = password;
     }
 }

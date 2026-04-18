@@ -22,7 +22,7 @@ public class ClassNumDao extends Dao {
             // プリペアードステートメントにSQL文をセット
             statement = connection.prepareStatement("select * from class_num where class_num = ? and school_cd = ?");
             // パラメータをセット
-            statement.setString(1, classNum);
+            statement.setString(1, classNum.getClass_num());
             statement.setString(2, school.getCd());
             // SQL文を実行
             ResultSet rs = statement.executeQuery();
@@ -31,7 +31,7 @@ public class ClassNumDao extends Dao {
             if (rs.next()) {
                 // クラス番号が存在する場合は各値をセット
                 classNum.setClassNum(rs.getString("class_num"));
-                classNum.setSchool(schoolDao.getSchool(rs.getString("school_cd")));
+                classNum.setSchool(schoolDao.get(rs.getString("school_cd")));
             } else {
                 // クラス番号が存在しない場合はnullをセット
                 classNum = null;
@@ -103,10 +103,11 @@ public class ClassNumDao extends Dao {
 
         return list;
     }
-
+    
+    /*
     public boolean save(ClassNum classNum) throws Exception {
     }
 
     public boolean save(ClassNum classNum, String newClassNum) throws Exception {
-    }
+    }*/
 }

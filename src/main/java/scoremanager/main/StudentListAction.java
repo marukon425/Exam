@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import bean.School;
 import bean.Student;
 import bean.Teacher;
 import dao.ClassNumDao;
@@ -19,18 +18,10 @@ import tool.Action;
 public class StudentListAction extends Action {
 
 	@Override
-	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
+	public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 	    HttpSession session = request.getSession();//セッション
 	    Teacher teacher = (Teacher)session.getAttribute("user");
 	    
-	    //ログインをスキップする
-	    if (teacher == null) {
-	        // 開発用ダミーデータ
-	        teacher = new Teacher();
-	        School dummySchool = new School();
-	        dummySchool.setCd("tes"); // DBに存在する学校コードに変える
-	        teacher.setSchool(dummySchool);
-	    }
 	    
 	    int entYear = 0;// 入学年度
 	    boolean isAttend = false;// 在学フラグ
@@ -91,7 +82,8 @@ public class StudentListAction extends Action {
 		 request.setAttribute("f3", isAttendStr);
 		 
 		 //JSPへフォワード
-		 request.getRequestDispatcher("student_list.jsp").forward(request, response);
+		 //request.getRequestDispatcher("student_list.jsp").forward(request, response);
+		 return "student_list.jsp";
 	}
 
 }

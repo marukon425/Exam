@@ -264,7 +264,8 @@ public class StudentDao extends Dao {
 
         return list;
     }
-
+    
+    // sqlの判定をしている
 	public boolean save(Student student) throws Exception {
 	    // 1. 変数の宣言
 	    String sql;
@@ -306,7 +307,6 @@ public class StudentDao extends Dao {
 	        throw e;
 	    }
 	
-	    // --- ここから画像の内容 ---
 	    // tryブロックの外で、最終的な count を判定して戻り値を返す
 	    if (count > 0) {
 	        // 実行件数が1件以上ある場合
