@@ -12,7 +12,7 @@
 		<section class="me-4">
             <h2 class="h3 mb-3 fw-norma bg-secondary bg-opacity-10 py-2 px-4">科目管理</h2>
             <div class="my-2 text-end px-4">
-            	<a href="subject_create.jsp">新規登録</a>
+            	<a href="SubjectCreate.action">新規登録</a>
             </div> 
             <c:choose>
             	<c:when test="${subjects.size()>0 }">
@@ -23,14 +23,19 @@
 	            			<th></th>
 	            			<th></th>
 	            		</tr>
-	            		<c:forEach var="subject" items="${subjects }">
-		            		<tr>
-		            			<td>${subject.cd }</td>
-		            			<td>${subject.name }</td>
-		            			<td><a href="subject_update.jsp">変更</a></td>
-		            			<td><a href="subject_delete.jsp">削除</td>
-		            		</tr>
-		            	</c:forEach>
+						<c:forEach var="subject" items="${subjects}">
+						    <tr>
+						        <td>${subject.cd}</td>
+						        <td>${subject.name}</td>
+						        <td><a href="subject_update.jsp">変更</a></td>
+						        <td>
+						            <a href="SubjectDelete.action?cd=${subject.cd}">
+						                削除
+						            </a>
+						        </td>
+						    </tr>
+						</c:forEach>
+
 	            	</table>
 	           </c:when>
             	<c:otherwise>
