@@ -36,11 +36,11 @@ public class StudentUpdateAction extends Action {
     	// 所属している学校の全クラスを取得
     	List<String> claslist = class_dao.filter(school);
     	
-    	session.setAttribute("ent_year", student.getEntYear());
-    	session.setAttribute("no", student.getNo());
-    	session.setAttribute("name", student.getName());
-    	session.setAttribute("class_num", student.getClassNum());
-    	session.setAttribute("class_num_set", claslist);
+    	request.setAttribute("ent_year", student.getEntYear());
+    	request.setAttribute("no", student.getNo());
+    	request.setAttribute("name", student.getName());
+    	request.setAttribute("class_num", student.getClassNum());
+    	request.setAttribute("class_num_set", claslist);
     	
     	
         return "student_update.jsp";

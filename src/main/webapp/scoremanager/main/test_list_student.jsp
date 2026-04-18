@@ -29,7 +29,7 @@
               <div class="d-flex flex-column">
                 <label class="form-label mb-1" for="f1">入学年度</label>
                 <select id="f1" name="f1" class="form-select form-select-sm" style="min-width:140px;">
-                  <option value="">--------</option>
+                  <option value="" disabled selected>--------</option>
                   <c:forEach var="year" items="${ent_year_set}">
                     <option value="${year}" <c:if test="${param.f1 == year}">selected</c:if>>${year}</option>
                   </c:forEach>
