@@ -1,6 +1,11 @@
 package scoremanager.main;
 
+import java.util.List;
+
+import bean.School;
 import bean.Student;
+import bean.Teacher;
+import dao.ClassNumDao;
 import dao.StudentDao;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -15,7 +20,12 @@ public class StudentUpdateAction extends Action {
     	
     	StudentDao dao = new StudentDao();
     	Student student = new Student();
+    	ClassNumDao class_dao = new ClassNumDao();
     	
+    	Teacher teacher = (Teacher) session.getAttribute("teacher");
+    	// schoolに学校コードをセット
+        School school = new School();
+        school.setCd(teacher.getSchool().getCd());
     	
     	
     	// 学生番号を拾って値をセット
@@ -23,14 +33,14 @@ public class StudentUpdateAction extends Action {
     	
     	student = dao.get(no);
     	
-    	
+    	// 所属している学校の全クラスを取得
+    	List<String> claslist = class_dao.filter(school);
     	
     	session.setAttribute("ent_year", student.getEntYear());
     	session.setAttribute("no", student.getNo());
     	session.setAttribute("name", student.getName());
-    	session.setAttribute("num", student.getEntYear());
-    	session.setAttribute("class_num_set", student.getEntYear());
-    	
+    	session.setAttribute("class_num", student.getClassNum());
+    	session.setAttribute("class_num_set", claslist);
     	
     	
         return "student_update.jsp";
