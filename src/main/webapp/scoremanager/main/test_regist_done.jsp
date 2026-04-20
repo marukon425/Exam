@@ -14,7 +14,7 @@
             </h2>
 
             <!-- ▼ フィルタ部分 -->
-            <form action="TestRegistExecute.action" method="post">
+            <form method="get" action="TestRegist.action">
                 <div class="row border mx-3 mb-3 py-2 align-items-center rounded" id="filter">
 
                     <!-- 入学年度 -->
@@ -78,7 +78,54 @@
             </form>
             <!-- ▲ フィルタ部分 -->
 
-            
+            <!-- 科目ラベル -->
+            <div class="ms-3 mb-2">
+                科目：${f3}（${f4}回）
+            </div>
+
+            <!-- ▼ 成績一覧テーブル -->
+            <form method="post" action="TestRegistExecute.action">
+
+                <table class="table mx-3">
+                    <thead class="table-light border-bottom">
+                        <tr>
+                            <th>入学年度</th>
+                            <th>クラス</th>
+                            <th>学生番号</th>
+                            <th>氏名</th>
+                            <th>点数</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <c:forEach var="test" items="${tests}">
+                            <tr class="border-bottom">
+                                <td>${test.student.entYear}</td>
+                                <td>${test.student.classNum}</td>
+                                <td>${test.student.no}</td>
+                                <td>${test.student.name}</td>
+                                <td>
+                                    <input type="text"
+                                           class="form-control"
+                                           name="point_${test.student.no}"
+                                           value="${test.point}">
+                                </td>
+                            </tr>
+                            <!-- hidden: 学生番号・回数・科目コード -->
+                            <input type="hidden" name="regist" value="${test.student.no}">
+                            <input type="hidden" name="count"  value="${f4}">
+                            <input type="hidden" name="subject" value="${f3}">
+                        </c:forEach>
+                    </tbody>
+                </table>
+
+                <!-- 登録して終了ボタン -->
+                <div class="my-3">
+                    <button type="submit" class="btn btn-secondary">登録して終了</button>
+                </div>
+
+            </form>
+            <!-- ▲ 成績一覧テーブル -->
+
         </section>
     </c:param>
 </c:import>
