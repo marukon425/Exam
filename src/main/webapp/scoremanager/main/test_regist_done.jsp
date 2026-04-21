@@ -14,7 +14,7 @@
             </h2>
 
             <!-- ▼ フィルタ部分 -->
-            <form method="get" action="TestRegist.action">
+            <form method="get" action="TestRegistExecute.action">
                 <div class="row border mx-3 mb-3 py-2 align-items-center rounded" id="filter">
 
                     <!-- 入学年度 -->
@@ -99,21 +99,16 @@
                     <tbody>
                         <c:forEach var="test" items="${tests}">
                             <tr class="border-bottom">
-                                <td>${test.student.entYear}</td>
-                                <td>${test.student.classNum}</td>
-                                <td>${test.student.no}</td>
-                                <td>${test.student.name}</td>
-                                <td>
-                                    <input type="text"
-                                           class="form-control"
-                                           name="point_${test.student.no}"
-                                           value="${test.point}">
-                                </td>
+                                <td>${test.entYear}</td>
+                                <td>${test.classNum}</td>
+                                <td>${test.studentNo}</td>
+                                <td>${test.studentName}</td>
+  
                             </tr>
                             <!-- hidden: 学生番号・回数・科目コード -->
-                            <input type="hidden" name="regist" value="${test.student.no}">
-                            <input type="hidden" name="count"  value="${f4}">
-                            <input type="hidden" name="subject" value="${f3}">
+                            <input type="hidden" name="regist" value="${test.studentNo}">
+                            <input type="hidden" name="count"  value="${test.no}">
+                            <input type="hidden" name="subject" value="${test.subjectCd}">
                         </c:forEach>
                     </tbody>
                 </table>

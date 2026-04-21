@@ -14,7 +14,7 @@
             </h2>
 
             <!-- ▼ フィルタ部分 -->
-            <form action="TestRegistExecute.action" method="post">
+            <form class="" action="TestRegistExecute.action" method="get">
                 <div class="row border mx-3 mb-3 py-2 align-items-center rounded" id="filter">
 
                     <!-- 入学年度 -->
