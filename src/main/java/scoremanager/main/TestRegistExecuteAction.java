@@ -15,7 +15,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import tool.Action;
 
-public class TestRegistExecute extends Action {
+public class TestRegistExecuteAction extends Action {
 	
 	@Override
 	public String execute(
@@ -56,13 +56,14 @@ public class TestRegistExecute extends Action {
 	        tests = new ArrayList<>();
 	    }
 	    
-	    if (entYearStr != null) {
+	    if (entYearStr != null && !entYearStr.isEmpty()) {
 	        entYear = Integer.parseInt(entYearStr);
 	    }
 
-	    if (noStr != null) {
+	    if (noStr != null && !noStr.isEmpty()) {
 	        no = Integer.parseInt(noStr);
 	    }
+
 	    
 	    tests = tDao.filter(teacher.getSchool(), entYear, classNum, subjectCd,no);
 	    // リストを初期化

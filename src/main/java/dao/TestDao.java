@@ -108,10 +108,9 @@ public class TestDao extends Dao {
         // リザルトセット
         ResultSet rSet = null;
         // SQL文のソート
-        String order = " order by ent_year asc, studentCd asc";
         try {
         	 // プリペアードステートメントにSQL文をセット
-            statement = connection.prepareStatement(baseSql + order);
+            statement = connection.prepareStatement(baseSql);
             // プリペアードステートメントに学校コードをバインド
             statement.setString(1, school.getCd());
             // プリペアードステートメントに入学年度をバインド

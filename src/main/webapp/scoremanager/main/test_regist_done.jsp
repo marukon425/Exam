@@ -103,7 +103,12 @@
                                 <td>${test.classNum}</td>
                                 <td>${test.studentNo}</td>
                                 <td>${test.studentName}</td>
-  
+  								<td>
+                                    <input type="text"
+                                           class="form-control"
+                                           name="point_${test.no}"
+                                           value="${test.point}">
+                                </td>
                             </tr>
                             <!-- hidden: 学生番号・回数・科目コード -->
                             <input type="hidden" name="regist" value="${test.studentNo}">
