@@ -16,83 +16,108 @@ import jakarta.servlet.http.HttpSession;
 import tool.Action;
 
 public class TestRegistExecuteAction extends Action {
-	
-	@Override
-	public String execute(
-			HttpServletRequest request,HttpServletResponse response
-	) throws Exception{
-		HttpSession session = request.getSession();
-		Teacher teacher = (Teacher)session.getAttribute("user");
-		
-		int entYear = 0;// 入学年度
-		int no = 0;
-		List<Test> tests = null;// 学生リスト
-	    TestDao tDao = new TestDao();// 学生Dao
-	    LocalDate todaysDate = LocalDate.now();// LocalDateインスタンスを取得
-	    List<Integer> entYearSet = new ArrayList<>();
-    	int year = todaysDate.getYear();// 現在の年を取得
-    	for (int i = year - 10; i < year + 1; i++) {
-	        entYearSet.add(i);
-	    }
-	    // リストを初期化
-	    
-	    ClassNumDao classNumDao = new ClassNumDao();
+
+    @Override
+    public String execute(
+            HttpServletRequest request,
+            HttpServletResponse response
+    ) throws Exception {
+
+        HttpSession session = request.getSession();
+        Teacher teacher = (Teacher) session.getAttribute("user"); // ←元コード維持
+
+        /* ===== 入学年度セレクタ ===== */
+        LocalDate todaysDate = LocalDate.now();
+        int year = todaysDate.getYear();
+        List<Integer> entYearSet = new ArrayList<>();
+        for (int i = year - 10; i < year + 1; i++) {
+            entYearSet.add(i);
+        }
+        request.setAttribute("ent_year_set", entYearSet);
+
+        /* ===== クラスセレクタ ===== */
+        ClassNumDao classNumDao = new ClassNumDao();
         List<String> classNumSet = classNumDao.filter(teacher.getSchool());
+        request.setAttribute("class_num_set", classNumSet);
+
+        /* ===== 科目セレクタ ===== */
         SubjectDao subjectDao = new SubjectDao();
         List<Subject> subjects = subjectDao.filter(teacher.getSchool(), null);
+        request.setAttribute("subjects", subjects);
+
+        /* ===== 回数セレクタ ===== */
         List<Integer> times = new ArrayList<>();
-    	
-    	for (int i = 0; i < 10; i++) {
-    		times.add(i + 1);
-    	}
-//	    Map<String, String> errors = new HashMap<>();// エラーメッセージ
-		
-		String entYearStr = request.getParameter("f1");// 入力された入学年度
-	    String classNum = request.getParameter("f2");// 入力されたクラス番号
-	    String subjectCd = request.getParameter("f3");// 入力された科目名
-	    String noStr = request.getParameter("f4");// 入力された回数
-	    
-	    if (tests == null) {
-	        tests = new ArrayList<>();
-	    }
-	    
-	    if (entYearStr != null && !entYearStr.isEmpty()) {
-	        entYear = Integer.parseInt(entYearStr);
-	    }
+        for (int i = 0; i < 10; i++) {
+            times.add(i + 1);
+        }
+        request.setAttribute("times", times);
 
-	    if (noStr != null && !noStr.isEmpty()) {
-	        no = Integer.parseInt(noStr);
-	    }
 
-	    
-	    tests = tDao.filter(teacher.getSchool(), entYear, classNum, subjectCd,no);
-	    // リストを初期化
-//	    List<Integer> entYearSet = new ArrayList<>();
-	    // 学生をもとに成績一覧を取得
-//	 	List<Test> list = cNumDao.filter(teacher.getSchool());
-	 	
-//	 	if(entYear != 0 && !classNum.equals("0") && !subjectName.equals("0") && no !=0) {
-//	 		// 全ての項目を指定した場合
-//	 		tests = tDao.filter(teacher.getSchool(), entYear, classNum, subjectName, no);
-//    	}// else {
-//	 		errors.put("f1", "クラスを指定する場合は入学年度も指定してください");
-//		    request.setAttribute("errors", errors);
-//	 	}
-//	 	
-	    request.setAttribute("ent_year_set", entYearSet);
-	    request.setAttribute("class_num_set", classNumSet);
-	    request.setAttribute("subjects", subjects);
-	    request.setAttribute("times", times);
-    	
-	 	request.setAttribute("tests", tests);
-	 	request.setAttribute("f1", entYear);
-	 	request.setAttribute("f2", classNum);
-	 	request.setAttribute("f3", subjectCd);
-	 	request.setAttribute("f4", no);
-	 	
-	 	
-	return "test_regist_done.jsp";	
-	}
-	
+        String f1 = request.getParameter("f1"); // 入学年度
+        String f2 = request.getParameter("f2"); // クラス
+        String f3 = request.getParameter("f3"); // 科目
+        String f4 = request.getParameter("f4"); // 回数
 
+        request.setAttribute("f1", f1);
+        request.setAttribute("f2", f2);
+        request.setAttribute("f3", f3);
+        request.setAttribute("f4", f4);
+
+
+        if (f1 != null && f2 != null && f3 != null && f4 != null &&
+            !f1.isEmpty() && !f2.isEmpty() && !f3.isEmpty() && !f4.isEmpty()) {
+
+            TestDao testDao = new TestDao();
+            List<Test> tests = testDao.filter(
+                    teacher.getSchool(),
+                    Integer.parseInt(f1),
+                    f2,
+                    f3,
+                    Integer.parseInt(f4)
+            );
+
+            request.setAttribute("tests", tests);
+
+
+            request.setAttribute("canRegist", true);
+        }
+        
+        
+     // ===== 成績登録処理を追加 =====
+        if (request.getParameter("canRegist") != null) {
+
+            TestDao saveDao = new TestDao();
+
+            for (Test test : (List<Test>) request.getAttribute("tests")) {
+
+                String pointStr = request.getParameter("point_" + test.getStudentNo());
+
+                if (pointStr == null || pointStr.isEmpty()) {
+                    continue;
+                }
+
+                int point = Integer.parseInt(pointStr);
+
+                // 点数チェック
+                if (point < 0 || point > 100) {
+                    request.setAttribute("error", "点数は0〜100の範囲で入力してください。");
+                    return "test_regist.jsp";
+                }
+
+                // TestBean に点数をセット
+                test.setPoint(point);
+
+                // 成績登録（INSERT / UPDATE）
+                saveDao.save(test);
+            }
+
+            // 登録完了画面へ
+            return "test_regist_done.jsp";
+        }
+
+        return "test_regist.jsp";
+    }
+    
+    
 }
+

@@ -15,64 +15,7 @@ public class TestDao extends Dao {
 		    "join student s on t.student_no = s.no " +
 		    "where t.school_cd=? and s.ent_year=? and s.class_num=? and t.subject_cd=? and t.no=?";
 	
-//	public Test get(String no) throws Exception {
-//		// 成績インスタンスを初期化
-//		Test test = new Test();
-//		// データのコネクションを確立
-//		Connection connection = getConnection();
-//		// プリペアードステートメント
-//        PreparedStatement statement = null;
-//        
-//        try {
-//        	// プリペアードステートメントにSQL文をセット
-//            statement = connection.prepareStatement("select * from test where no=?");
-//            // プリペアードステートメントに学生番号をバインド
-//            statement.setString(1, no);
-//            // プリペアードステートメントを実行
-//            ResultSet rSet = statement.executeQuery();
-//            // 学校Daoを初期化
-//            SchoolDao schoolDao = new SchoolDao();
-//            
-//            if (rSet.next()) {
-//            	// リザルトセットが存在する場合
-//                test.setEntYear(rSet.getInt("ent_year"));
-//            	test.setStudentNo(rSet.getString("studentNo"));
-//            	test.setStudentName(rSet.getString("studentName"));
-//            	test.setSubjectCd(rSet.getString("subjectCd"));
-//            	test.setSubjectName(rSet.getString("subjectName"));
-//                test.setNo(rSet.getInt("no"));
-//                test.setPoint(rSet.getInt("point"));
-//                test.setClassNum(rSet.getString("class_num"));
-//                // 学校フィールドには学校コードで検索した学校インスタンスをセット
-//                test.setSchool(schoolDao.get(rSet.getString("school_cd")));
-//            }else {
-//                // リザルトセットが存在しない場合
-//                // 学生インスタンスにnullをセット
-//                test = null;
-//            }
-//        }catch (Exception e) {
-//            throw e;
-//        } finally {
-//            // プリペアードステートメントを閉じる
-//            if (statement != null) {
-//                try {
-//                    statement.close();
-//                } catch (SQLException sqle) {
-//                    throw sqle;
-//                }
-//            }
-//            // コネクションを閉じる
-//            if (connection != null) {
-//                try {
-//                    connection.close();
-//                } catch (SQLException sqle) {
-//                    throw sqle;
-//                }
-//            }
-//        }
-//
-//        return test;
-//	}
+
 	
 	private List<Test> postFilter(ResultSet rSet, School school) throws Exception {
 
@@ -144,12 +87,90 @@ public class TestDao extends Dao {
                 } catch (SQLException sqle) {
                     throw sqle;
                 }
+
             }
+            
+            
+            
+            
         }
+        
+        
+        
 
         return list;
     }
 	
 	
-	
+	/**
+     * 成績登録
+     */
+    public boolean save(Test test) throws Exception {
+
+        String checkSql =
+            "select count(*) from test " +
+            "where student_no=? and subject_cd=? and school_cd=? and no=?";
+
+        String insertSql =
+            "insert into test(student_no, subject_cd, school_cd, no, point, class_num) " +
+            "values(?, ?, ?, ?, ?, ?)";
+
+        String updateSql =
+            "update test set point=? " +
+            "where student_no=? and subject_cd=? and school_cd=? and no=?";
+
+        Connection connection = getConnection();
+        PreparedStatement statement = null;
+        ResultSet rSet = null;
+
+        try {
+            // --- 既存データ確認 ---
+            statement = connection.prepareStatement(checkSql);
+            statement.setString(1, test.getStudentNo());
+            statement.setString(2, test.getSubjectCd());
+            statement.setString(3, test.getSchool().getCd());
+            statement.setInt(4, test.getNo());
+
+            rSet = statement.executeQuery();
+            rSet.next();
+            boolean exists = rSet.getInt(1) > 0;
+
+            statement.close();
+
+            // --- INSERT / UPDATE ---
+            if (exists) {
+                statement = connection.prepareStatement(updateSql);
+                statement.setInt(1, test.getPoint());
+                statement.setString(2, test.getStudentNo());
+                statement.setString(3, test.getSubjectCd());
+                statement.setString(4, test.getSchool().getCd());
+                statement.setInt(5, test.getNo());
+            } else {
+                statement = connection.prepareStatement(insertSql);
+                statement.setString(1, test.getStudentNo());
+                statement.setString(2, test.getSubjectCd());
+                statement.setString(3, test.getSchool().getCd());
+                statement.setInt(4, test.getNo());
+                statement.setInt(5, test.getPoint());
+                statement.setString(6, test.getClassNum());
+            }
+
+            int count = statement.executeUpdate();
+            return count > 0;
+
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            if (rSet != null) {
+                try { rSet.close(); } catch (SQLException e) {}
+            }
+            if (statement != null) {
+                try { statement.close(); } catch (SQLException e) {}
+            }
+            if (connection != null) {
+                try { connection.close(); } catch (SQLException e) {}
+            }
+        }
+    }
+
 }
