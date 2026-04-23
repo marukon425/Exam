@@ -46,14 +46,26 @@ public class TestListAction extends Action  {
     	
     	// -----------------------------------------
     	
-    	//回数のセレクターをセット-----------------
-    	List<Integer> times = new ArrayList<>();
+        int entYear = 0;// 入学年度
+
+		String entYearStr = request.getParameter("f1");// 入力された入学年度
+
+	    String classNum = request.getParameter("f2");// 入力されたクラス番号
+
+	    String subjectCd = request.getParameter("f3");// 入力された科目名
+        
+	    if (entYearStr != null) {
+
+	        entYear = Integer.parseInt(entYearStr);
+
+	    }
+	    
+	 	request.setAttribute("f1", entYear);
+
+	 	request.setAttribute("f2", classNum);
+
+	 	request.setAttribute("f3", subjectCd);
     	
-    	for (int i = 0; i < 10; i++) {
-    		times.add(i + 1);
-    	}
-    	request.setAttribute("times", times);
-    	//-----------------------------------------
-        return "test_regist.jsp";
+        return "test_list.jsp";
         }
 }
