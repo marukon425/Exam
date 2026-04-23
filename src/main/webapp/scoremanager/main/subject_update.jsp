@@ -3,7 +3,7 @@
 
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 
-<c:import url="../common/base.jsp">
+<c:import url="/scoremanager/main/common/base.jsp">
     <c:param name="title">得点管理システム</c:param>
     <c:param name="scripts"></c:param>
 
@@ -18,8 +18,8 @@
 
 
                 <input type="hidden"
-                       name="kamokucode"
-                       value="${kamokucode}">
+                       name="cd"
+                       value="${cd}">
 
 
                 <div class="mb-1">
@@ -30,7 +30,7 @@
 
                 <div class="mb-3">
                     <span class="fw-bold">
-                        ${kamokucode}
+                        ${cd}
                     </span>
                 </div>
 
@@ -43,8 +43,8 @@
 
                 <div class="mb-4">
                     <input type="text"
-                           name="kamokuname"
-                           value="${kamokuname}"
+                           name="name"
+                           value="${name}"
                            maxlength="20"
                            required
                            class="form-control">
