@@ -83,37 +83,52 @@ public class TestRegistExecuteAction extends Action {
         }
         
         
-     // ===== 成績登録処理を追加 =====
-        if (request.getParameter("canRegist") != null) {
 
-            TestDao saveDao = new TestDao();
+        if (request.getParameterMap().keySet().stream()
+                .anyMatch(key -> key.startsWith("point_"))) {
 
-            for (Test test : (List<Test>) request.getAttribute("tests")) {
+        	TestDao updateDao = new TestDao();
 
-                String pointStr = request.getParameter("point_" + test.getStudentNo());
+        	String subjectCd = request.getParameter("subject");
+        	int no = Integer.parseInt(request.getParameter("count"));
 
-                if (pointStr == null || pointStr.isEmpty()) {
-                    continue;
+        	for (String key : request.getParameterMap().keySet()) {
+
+        	    if (key.startsWith("point_")) {
+
+        	        String studentNo = key.replace("point_", "");
+        	        String pointStr = request.getParameter(key);
+
+        	        if (pointStr == null || pointStr.isEmpty()) {
+        	            continue;
+        	        }
+
+        	        int point = Integer.parseInt(pointStr);
+
+        	        if (point < 0 || point > 100) {
+        	            request.setAttribute("error", "点数は0〜100の範囲で入力してください。");
+        	            return "test_regist.jsp";
+        	        }
+
+        	        Test test = new Test();
+        	        test.setStudentNo(studentNo);
+        	        test.setSubjectCd(subjectCd);
+        	        test.setNo(no);
+        	        test.setPoint(point);
+        	        test.setSchool(teacher.getSchool());
+
+        	        // ★ ここで確実に UPDATE
+        	        updateDao.updatePoint(test);
+        	    }
+        	
+        	
                 }
-
-                int point = Integer.parseInt(pointStr);
-
-                // 点数チェック
-                if (point < 0 || point > 100) {
-                    request.setAttribute("error", "点数は0〜100の範囲で入力してください。");
-                    return "test_regist.jsp";
-                }
-
-                // TestBean に点数をセット
-                test.setPoint(point);
-
-                // 成績登録（INSERT / UPDATE）
-                saveDao.save(test);
-            }
+            
 
             // 登録完了画面へ
             return "test_regist_done.jsp";
         }
+    
 
         return "test_regist.jsp";
     }

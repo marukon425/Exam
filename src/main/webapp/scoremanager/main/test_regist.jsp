@@ -14,7 +14,7 @@
             </h2>
  
             <!-- ▼ フィルタ部分 -->
-            <form class="" action="TestRegist.action" method="get">
+            <form action="TestRegist.action" method="get">
                 <div class="row border mx-3 mb-3 py-2 align-items-center rounded" id="filter">
  
                     <!-- 入学年度 -->
@@ -73,70 +73,74 @@
                     <div class="col-2 text-center">
                         <button type="submit" class="btn btn-secondary">検索</button>
                     </div>
+ 
                 </div>
             </form>
             <!-- ▲ フィルタ部分 -->
+ 
             <c:choose>
-            	<c:when test="${tests.size()>0}">
-		             <!-- 科目ラベル -->
-		            <div class="ms-3 mb-2">
-		            	<c:forEach var="subject" items="${subjects}">
-						    <c:if test="${subject.cd == f3}">
-						        科目：${subject.name}（${f4}回）
-						    </c:if>
-						</c:forEach>
-		            </div>
-		
-		            <!-- ▼ 成績一覧テーブル -->
-		            <form method="post" action="TestRegistExecute.action">
-		
-		                <table class="table mx-3">
-		                    <thead class="table-light border-bottom">
-		                        <tr>
-		                            <th>入学年度</th>
-		                            <th>クラス</th>
-		                            <th>学生番号</th>
-		                            <th>氏名</th>
-		                            <th>点数</th>
-		                        </tr>
-		                    </thead>
-		                    <tbody>
-		                        <c:forEach var="test" items="${tests}">
-		                            <tr class="border-bottom">
-		                                <td>${test.entYear}</td>
-		                                <td>${test.classNum}</td>
-		                                <td>${test.studentNo}</td>
-		                                <td>${test.studentName}</td>
-		  								<td>
-		                                    <input type="text"
-		                                           class="form-control"
-		                                           name="point_${test.no}"
-		                                           value="${test.point}">
-		                                </td>
-		                            </tr>
-		                            <!-- hidden: 学生番号・回数・科目コード -->
-		                            <input type="hidden" name="regist" value="${test.studentNo}">
-		                            <input type="hidden" name="count"  value="${test.no}">
-		                            <input type="hidden" name="subject" value="${test.subjectCd}">
-		                        </c:forEach>
-		                    </tbody>
-		                </table>
-		
-		                <!-- 登録して終了ボタン -->
-		                <div class="my-3">
-		                    <button type="submit" class="btn btn-secondary">登録して終了</button>
-		                </div>
-		
-		            </form>
-		            <!-- ▲ 成績一覧テーブル -->
-		            
-				</c:when>
-				<c:otherwise>
+                <c:when test="${tests.size() > 0}">
+ 
+                    <!-- 科目ラベル -->
+                    <div class="ms-3 mb-2">
+                        <c:forEach var="subject" items="${subjects}">
+                            <c:if test="${subject.cd == f3}">
+                                科目：${subject.name}（${f4}回）
+                            </c:if>
+                        </c:forEach>
+                    </div>
+ 
+                    <!-- ▼ 成績一覧テーブル -->
+                    <form method="post" action="TestRegistExecute.action">
+ 
+                        <!-- ★ forEach の外に hidden を移動 ★ -->
+                        <input type="hidden" name="count" value="${f4}">
+                        <input type="hidden" name="subject" value="${f3}">
+ 
+                        <table class="table mx-3">
+                            <thead class="table-light border-bottom">
+                                <tr>
+                                    <th>入学年度</th>
+                                    <th>クラス</th>
+                                    <th>学生番号</th>
+                                    <th>氏名</th>
+                                    <th>点数</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <c:forEach var="test" items="${tests}">
+                                    <tr class="border-bottom">
+                                        <td>${test.entYear}</td>
+                                        <td>${test.classNum}</td>
+                                        <td>${test.studentNo}</td>
+                                        <td>${test.studentName}</td>
+                                        <td>
+                                            <!-- ★ 学生番号で一意にする ★ -->
+                                            <input type="text"
+                                                   class="form-control"
+                                                   name="point_${test.studentNo}"
+                                                   value="${test.point}">
+                                        </td>
+                                    </tr>
+                                </c:forEach>
+                            </tbody>
+                        </table>
+ 
+                        <!-- 登録して終了ボタン -->
+                        <div class="my-3">
+                            <button type="submit" class="btn btn-secondary">登録して終了</button>
+                        </div>
+ 
+                    </form>
+                    <!-- ▲ 成績一覧テーブル -->
+ 
+                </c:when>
+                <c:otherwise>
                 </c:otherwise>
-	         </c:choose>
+            </c:choose>
+ 
         </section>
     </c:param>
 </c:import>
-
-
+ 
  
