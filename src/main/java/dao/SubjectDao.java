@@ -204,10 +204,10 @@ public class SubjectDao extends Dao {
 	            }
 	        } else {
 	            // 存在する場合は UPDATE
-	            sql = "update subject set cd=?, name=?";
+	            sql = "update subject set name=? where cd=?";
 	            try (PreparedStatement statement = connection.prepareStatement(sql)) {
-	            	statement.setString(1, subject.getCd());
-	                statement.setString(2, subject.getName());
+	            	statement.setString(1, subject.getName());
+	                statement.setString(2, subject.getCd());
 	                // SQLを実行し、更新件数を取得
 	                count = statement.executeUpdate();
 	            }
