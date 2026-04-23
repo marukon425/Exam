@@ -100,70 +100,30 @@ public class TestDao extends Dao {
 
         return list;
     }
-	
-	
-	/**
-     * 成績登録
-     */
-    public boolean save(Test test) throws Exception {
 
-        String checkSql =
-            "select count(*) from test " +
-            "where student_no=? and subject_cd=? and school_cd=? and no=?";
+    public boolean updatePoint(Test test) throws Exception {
 
-        String insertSql =
-            "insert into test(student_no, subject_cd, school_cd, no, point, class_num) " +
-            "values(?, ?, ?, ?, ?, ?)";
-
-        String updateSql =
+        String sql =
             "update test set point=? " +
-            "where student_no=? and subject_cd=? and school_cd=? and no=?";
+            "where student_no=? " +
+            "and subject_cd=? " +
+            "and school_cd=? " +
+            "and no=?";
 
         Connection connection = getConnection();
         PreparedStatement statement = null;
-        ResultSet rSet = null;
 
         try {
-            // --- 既存データ確認 ---
-            statement = connection.prepareStatement(checkSql);
-            statement.setString(1, test.getStudentNo());
-            statement.setString(2, test.getSubjectCd());
-            statement.setString(3, test.getSchool().getCd());
-            statement.setInt(4, test.getNo());
+            statement = connection.prepareStatement(sql);
+            statement.setInt(1, test.getPoint());
+            statement.setString(2, test.getStudentNo());
+            statement.setString(3, test.getSubjectCd());
+            statement.setString(4, test.getSchool().getCd());
+            statement.setInt(5, test.getNo());
 
-            rSet = statement.executeQuery();
-            rSet.next();
-            boolean exists = rSet.getInt(1) > 0;
+            return statement.executeUpdate() > 0;
 
-            statement.close();
-
-            // --- INSERT / UPDATE ---
-            if (exists) {
-                statement = connection.prepareStatement(updateSql);
-                statement.setInt(1, test.getPoint());
-                statement.setString(2, test.getStudentNo());
-                statement.setString(3, test.getSubjectCd());
-                statement.setString(4, test.getSchool().getCd());
-                statement.setInt(5, test.getNo());
-            } else {
-                statement = connection.prepareStatement(insertSql);
-                statement.setString(1, test.getStudentNo());
-                statement.setString(2, test.getSubjectCd());
-                statement.setString(3, test.getSchool().getCd());
-                statement.setInt(4, test.getNo());
-                statement.setInt(5, test.getPoint());
-                statement.setString(6, test.getClassNum());
-            }
-
-            int count = statement.executeUpdate();
-            return count > 0;
-
-        } catch (Exception e) {
-            throw e;
         } finally {
-            if (rSet != null) {
-                try { rSet.close(); } catch (SQLException e) {}
-            }
             if (statement != null) {
                 try { statement.close(); } catch (SQLException e) {}
             }
@@ -172,5 +132,4 @@ public class TestDao extends Dao {
             }
         }
     }
-
 }

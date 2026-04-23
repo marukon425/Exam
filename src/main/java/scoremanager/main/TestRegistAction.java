@@ -136,6 +136,37 @@ public class TestRegistAction extends Action  {
 	 	request.setAttribute("f3", subjectCd);
 
 	 	request.setAttribute("f4", no);
+	 	
+	 // 成績登録（点数変更）を付け足す 
+	 	if (request.getParameterMap().keySet().stream()
+	 	        .anyMatch(k -> k.startsWith("point_"))) {
+
+	 	    for (Test test : tests) {
+
+	 	        String pointStr = request.getParameter("point_" + test.getStudentNo());
+
+	 	        if (pointStr == null || pointStr.isEmpty()) {
+	 	            continue;
+	 	        }
+
+	 	        int point = Integer.parseInt(pointStr);
+
+	 	        // 点数チェック
+	 	        if (point < 0 || point > 100) {
+	 	            request.setAttribute("error", "点数は0〜100の範囲で入力してください。");
+	 	            return "test_regist.jsp";
+	 	        }
+
+	 	        test.setPoint(point);
+
+	 	        // ★ ここで UPDATE
+	 	        tDao.updatePoint(test);
+	 	    }
+
+	 	    // 登録完了画面へ
+	 	    return "test_regist_done.jsp";
+	 	}
+	 	
 
         return "test_regist.jsp";
 
