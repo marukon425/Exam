@@ -32,7 +32,6 @@
                     <span class="fw-bold">
                         ${cd}
                     </span>
-                    <div style="color: #FFCC00;">${deletecd}</div>
                 </div>
 
                 <!-- 科目名 -->

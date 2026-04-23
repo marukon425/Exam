@@ -17,18 +17,11 @@ public class SubjectUpdateExecuteAction extends Action {
 		Subject subject = new Subject();
 		subject.setName(request.getParameter("name"));
 		subject.setCd(request.getParameter("cd"));
-		
-		Subject old = subDao.get(subject.getCd());
-		if(old == null){
-			session.setAttribute("deletecd", "科目が存在していません");
-			System.out.println("失敗");
-            return "subject_update.jsp";
-		}else{
-			if(subDao.save(subject)) {
-				return "subject_update_done.jsp";
-			}else {
-				return "../error.jsp";
-			}
+	
+		if(subDao.save(subject)) {
+			return "subject_update_done.jsp";
+		}else {
+			return "../error.jsp";
 		}
 	}
 }
