@@ -73,7 +73,6 @@
                     <div class="col-2 text-center">
                         <button type="submit" class="btn btn-secondary">検索</button>
                     </div>
- 
                 </div>
             </form>
             <!-- ▲ フィルタ部分 -->
