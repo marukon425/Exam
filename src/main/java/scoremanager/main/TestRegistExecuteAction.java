@@ -58,81 +58,153 @@ public class TestRegistExecuteAction extends Action {
         String f3 = request.getParameter("f3"); // 科目
         String f4 = request.getParameter("f4"); // 回数
 
+        String subjectCdParam = request.getParameter("subject");
+        String countStr = request.getParameter("count");
+
+        // 値の調整（hidden から取れなければフィルタの f3, f4 を使う）
+        String subjectCd = (subjectCdParam != null) ? subjectCdParam : f3;
+        String finalCountStr = (countStr != null) ? countStr : f4;
+        
         request.setAttribute("f1", f1);
         request.setAttribute("f2", f2);
-        request.setAttribute("f3", f3);
-        request.setAttribute("f4", f4);
+        request.setAttribute("f3", subjectCd);
+        request.setAttribute("f4", finalCountStr);
 
+        if (request.getParameterMap().keySet().stream().anyMatch(key -> key.startsWith("point_"))) {
 
-        if (f1 != null && f2 != null && f3 != null && f4 != null &&
-            !f1.isEmpty() && !f2.isEmpty() && !f3.isEmpty() && !f4.isEmpty()) {
-
-            TestDao testDao = new TestDao();
-            List<Test> tests = testDao.filter(
-                    teacher.getSchool(),
-                    Integer.parseInt(f1),
-                    f2,
-                    f3,
-                    Integer.parseInt(f4)
-            );
-
-            request.setAttribute("tests", tests);
-
-
-            request.setAttribute("canRegist", true);
-        }
-        
-        
-
-        if (request.getParameterMap().keySet().stream()
-                .anyMatch(key -> key.startsWith("point_"))) {
-
-        	TestDao updateDao = new TestDao();
-
-        	String subjectCd = request.getParameter("subject");
-        	int no = Integer.parseInt(request.getParameter("count"));
-
-        	for (String key : request.getParameterMap().keySet()) {
-
-        	    if (key.startsWith("point_")) {
-
-        	        String studentNo = key.replace("point_", "");
-        	        String pointStr = request.getParameter(key);
-
-        	        if (pointStr == null || pointStr.isEmpty()) {
-        	            continue;
-        	        }
-
-        	        int point = Integer.parseInt(pointStr);
-
-        	        if (point < 0 || point > 100) {
-        	            request.setAttribute("error", "点数は0〜100の範囲で入力してください。");
-        	            return "test_regist.jsp";
-        	        }
-
-        	        Test test = new Test();
-        	        test.setStudentNo(studentNo);
-        	        test.setSubjectCd(subjectCd);
-        	        test.setNo(no);
-        	        test.setPoint(point);
-        	        test.setSchool(teacher.getSchool());
-
-        	        // ★ ここで確実に UPDATE
-        	        updateDao.updatePoint(test);
-        	    }
-        	
-        	
-                }
+            TestDao updateDao = new TestDao();
+            int no = 0;
+            if (finalCountStr != null && !finalCountStr.isEmpty()) {
+                no = Integer.parseInt(finalCountStr);
+            }
+            int entYear = 0;
+            if (f1 != null && !f1.isEmpty()) {
+                entYear = Integer.parseInt(f1);
+            }
             
+            // エラーの学生番号を溜めるリスト
+            List<String> errorStudentNos = new ArrayList<>();
+            // 保存対象を一時的に溜めるリスト
+            List<Test> saveList = new ArrayList<>();
+            
+            for (String key : request.getParameterMap().keySet()) {
+                if (key.startsWith("point_")) {
+                    String studentNo = key.replace("point_", "");
+                    String pointStr = request.getParameter(key);
 
-            // 登録完了画面へ
+                    if (pointStr == null || pointStr.isEmpty()) {
+                        continue;
+                    }
+                    try {
+
+	                    int point = Integer.parseInt(pointStr);
+	
+	                    if (point < 0 || point > 100) {
+	                        errorStudentNos.add(studentNo);
+	                    }else {
+	                        Test test = new Test();
+	                        test.setStudentNo(studentNo);
+	                        test.setSubjectCd(subjectCd);
+	                        test.setNo(no);
+	                        test.setPoint(point);
+	                        test.setSchool(teacher.getSchool());
+	                        test.setClassNum(f2);
+	                        saveList.add(test);
+	                    }
+                   }catch (NumberFormatException e) {
+                       errorStudentNos.add(studentNo);
+                   }
+
+                }
+            }
+            if (!errorStudentNos.isEmpty()) {
+                request.setAttribute("errorStudentNos", errorStudentNos);
+                
+                List<Test> tests = updateDao.filter(teacher.getSchool(), entYear, f2, subjectCd, no);
+                request.setAttribute("tests", tests);
+                return "test_regist.jsp";
+            }
+
+            for (Test saveTest : saveList) {
+                updateDao.upsertPoint(saveTest);
+            }
+            
             return "test_regist_done.jsp";
         }
-    
 
         return "test_regist.jsp";
     }
-    
-    
 }
 
+//        if (f1 != null && f2 != null && f3 != null && f4 != null &&
+//            !f1.isEmpty() && !f2.isEmpty() && !f3.isEmpty() && !f4.isEmpty()) {
+//
+//            TestDao testDao = new TestDao();
+//            List<Test> tests = testDao.filter(
+//                    teacher.getSchool(),
+//                    Integer.parseInt(f1),
+//                    f2,
+//                    f3,
+//                    Integer.parseInt(f4)
+//            );
+//
+//            request.setAttribute("tests", tests);
+//
+//
+//            request.setAttribute("canRegist", true);
+//        }
+//        
+//        
+//
+//        if (request.getParameterMap().keySet().stream()
+//                .anyMatch(key -> key.startsWith("point_"))) {
+//
+//        	TestDao updateDao = new TestDao();
+//
+//        	String subjectCd = request.getParameter("subject");
+//        	int no = Integer.parseInt(request.getParameter("count"));
+//
+//        	for (String key : request.getParameterMap().keySet()) {
+//
+//        	    if (key.startsWith("point_")) {
+//
+//        	        String studentNo = key.replace("point_", "");
+//        	        String pointStr = request.getParameter(key);
+//
+//        	        if (pointStr == null || pointStr.isEmpty()) {
+//        	            continue;
+//        	        }
+//
+//        	        int point = Integer.parseInt(pointStr);
+//
+//        	        if (point < 0 || point > 100) {
+//        	            request.setAttribute("error", "点数は0〜100の範囲で入力してください。");
+//        	            return "test_regist.jsp";
+//        	        }
+//
+//        	        Test test = new Test();
+//        	        test.setStudentNo(studentNo);
+//        	        test.setSubjectCd(subjectCd);
+//        	        test.setNo(no);
+//        	        test.setPoint(point);
+//        	        test.setSchool(teacher.getSchool());
+//
+//        	        // ★ ここで確実に UPDATE
+//        	        updateDao.updatePoint(test);
+//        	    }
+//        	
+//        	
+//                }
+//            
+//
+//            // 登録完了画面へ
+//            return "test_regist_done.jsp";
+//        }
+//    
+//
+//        return "test_regist.jsp";
+//    }
+//    
+//    
+//}
+//

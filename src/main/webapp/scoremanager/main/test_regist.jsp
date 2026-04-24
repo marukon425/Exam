@@ -73,8 +73,13 @@
                     <div class="col-2 text-center">
                         <button type="submit" class="btn btn-secondary">検索</button>
                     </div>
- 
+ 					<c:if test="${not empty filter_error}">
+					    <div class="small" style="color: #ff8c00">
+					        ${filter_error}
+					    </div>
+					</c:if>
                 </div>
+               
             </form>
             <!-- ▲ フィルタ部分 -->
  
@@ -94,8 +99,11 @@
                     <form method="post" action="TestRegistExecute.action">
  
                         <!-- ★ forEach の外に hidden を移動 ★ -->
-                        <input type="hidden" name="count" value="${f4}">
-                        <input type="hidden" name="subject" value="${f3}">
+                        <input type="hidden" name="f1" value="${f1}">
+					    <input type="hidden" name="f2" value="${f2}">
+					    <input type="hidden" name="subject" value="${f3}">
+					    <input type="hidden" name="count" value="${f4}">
+                        
  
                         <table class="table mx-3">
                             <thead class="table-light border-bottom">
@@ -119,7 +127,14 @@
                                             <input type="text"
                                                    class="form-control"
                                                    name="point_${test.studentNo}"
-                                                   value="${test.point}">
+                                                   value="${test.point == -1 ? '' :test.point}">
+                                             <c:forEach var="errNo" items="${errorStudentNos}">
+										        <c:if test="${errNo == test.studentNo}">
+										            <div class="small" style="color: #ff8c00;">
+										                0〜100の範囲で入力してください
+										            </div>
+										        </c:if>
+										    </c:forEach>      
                                         </td>
                                     </tr>
                                 </c:forEach>
