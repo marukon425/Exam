@@ -81,7 +81,7 @@
 
               <div class="d-flex flex-column">
                 <label class="form-label mb-1" for="studentId">学生番号</label>
-                <input id="studentId" name="studentId" type="text" class="form-control form-control-sm" placeholder="学生番号を入力してください" value="${fn:escapeXml(param.studentId)}" style="min-width:220px;" />
+                <input id="studentId" name="f4" type="text" class="form-control form-control-sm" placeholder="学生番号を入力してください" value="${fn:escapeXml(param.studentId)}" style="min-width:220px;" />
               </div>
 
               <div class="d-flex align-items-end">
