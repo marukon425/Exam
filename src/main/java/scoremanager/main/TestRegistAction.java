@@ -85,7 +85,7 @@ public class TestRegistAction extends Action  {
 
     	List<Integer> times = new ArrayList<>();
 
-    	for (int i = 0; i < 10; i++) {
+    	for (int i = 0; i < 2; i++) {
 
     		times.add(i + 1);
 
@@ -103,28 +103,30 @@ public class TestRegistAction extends Action  {
 
 	    String noStr = request.getParameter("f4");//
 
+	    
 
-	    if (tests == null) {
-
+	    if (entYearStr != null || classNum != null || subjectCd != null || noStr != null) {
+	        
+	        // すべての項目が正しく選択されているかチェック
+	        if (entYearStr != null && !entYearStr.isEmpty() && 
+	            classNum != null && !classNum.isEmpty() && 
+	            subjectCd != null && !subjectCd.isEmpty() && 
+	            noStr != null && !noStr.isEmpty()) {
+	            
+	            // 全て揃っているなら検索実行
+	            entYear = Integer.parseInt(entYearStr);
+	            no = Integer.parseInt(noStr);
+	            tests = tDao.filter(teacher.getSchool(), entYear, classNum, subjectCd, no);
+	            
+	        } else {
+	            
+	            tests = new ArrayList<>();
+	            request.setAttribute("filter_error", "入学年度とクラスと科目と回数を選択してください");
+	        }
+	    } else {
+	        // 条件が揃っていない場合は空のリストを渡す
 	        tests = new ArrayList<>();
-
 	    }
-
-	    if (entYearStr != null) {
-
-	        entYear = Integer.parseInt(entYearStr);
-
-	    }
- 
- 
-	    if (noStr != null) {
-
-	        no = Integer.parseInt(noStr);
-
-	    }
-
-	    tests = tDao.filter(teacher.getSchool(), entYear, classNum, subjectCd,no);
-
 	 	request.setAttribute("tests", tests);
 	 	
 	 	request.setAttribute("canRegist", true);

@@ -11,10 +11,13 @@ import bean.School;
 import bean.Test;
 
 public class TestDao extends Dao {
-	private String baseSql = "select t.*, s.ent_year, s.class_num, s.name from test t " +
-		    "join student s on t.student_no = s.no " +
-		    "where t.school_cd=? and s.ent_year=? and s.class_num=? and t.subject_cd=? and t.no=?";
-	
+	private String baseSql = 
+			"select s.ent_year, s.class_num, s.no as student_no, s.name, " + 
+		    "  t.point, t.subject_cd, t.no " +                         
+		    "from student s left join test t on s.no = t.student_no " +  
+		    "  and t.subject_cd = ?  and t.no = ? and t.school_cd = ? " +
+		    "where s.school_cd = ? and s.ent_year = ? and s.class_num = ? " + 
+		    "order by s.no asc"; 
 
 	
 	private List<Test> postFilter(ResultSet rSet, School school) throws Exception {
@@ -25,21 +28,25 @@ public class TestDao extends Dao {
 
 	        Test test = new Test();
 
-	        test.setEntYear(rSet.getInt("ent_year"));
-	        test.setClassNum(rSet.getString("class_num"));
-	        test.setStudentNo(rSet.getString("student_no"));
-	        test.setStudentName(rSet.getString("name"));
-	        test.setSubjectCd(rSet.getString("subject_cd"));
-	        test.setNo(rSet.getInt("no"));
-	        test.setPoint(rSet.getInt("point"));
+            test.setEntYear(rSet.getInt("ent_year"));
+            test.setClassNum(rSet.getString("class_num"));
+            test.setStudentNo(rSet.getString("student_no"));
+            test.setStudentName(rSet.getString("name"));
+            test.setSubjectCd(rSet.getString("subject_cd"));
+            test.setNo(rSet.getInt("no"));
 
-	        test.setSchool(school);
+            // 点数の処理：NULLの場合は -1 をセットして未入力状態とする
+            if (rSet.getObject("point") != null) {
+                test.setPoint(rSet.getInt("point"));
+            } else {
+                test.setPoint(-1); 
+            }
 
-	        list.add(test);
-	    }
-
-	    return list;
-	}
+            test.setSchool(school);
+            list.add(test);
+        }
+        return list;
+    }
 	
 	public List<Test> filter(School school, int entYear, String classNum, String subjectCd, int no) throws Exception {
 		// リストを初期化
@@ -52,18 +59,13 @@ public class TestDao extends Dao {
         ResultSet rSet = null;
         // SQL文のソート
         try {
-        	 // プリペアードステートメントにSQL文をセット
-            statement = connection.prepareStatement(baseSql);
-            // プリペアードステートメントに学校コードをバインド
-            statement.setString(1, school.getCd());
-            // プリペアードステートメントに入学年度をバインド
-            statement.setInt(2, entYear);
-            // プリペアードステートメントにクラス番号をバインド
-            statement.setString(3, classNum);
-            // プリペアードステートメントに科目名をバインド
-            statement.setString(4, subjectCd);
-            // プリペアードステートメントにテスト回数をバインド
-            statement.setInt(5, no);
+        	statement = connection.prepareStatement(baseSql);
+        	statement.setString(1, subjectCd); // t.subject_cd
+        	statement.setInt(2, no);           // t.no
+        	statement.setString(3, school.getCd()); // t.school_cd
+        	statement.setString(4, school.getCd()); // s.school_cd
+        	statement.setInt(5, entYear);      // s.ent_year
+        	statement.setString(6, classNum);  // s.class_num
             // プライベートステートメントを実行
             rSet = statement.executeQuery();
             
@@ -101,6 +103,26 @@ public class TestDao extends Dao {
         return list;
     }
 
+	public boolean upsertPoint(Test test) throws Exception {
+	    String sql = "MERGE INTO test " +
+	                 "(student_no, subject_cd, school_cd, no, point, class_num) " +
+	                 "KEY (student_no, subject_cd, school_cd, no) " +
+	                 "VALUES (?, ?, ?, ?, ?, ?)";
+
+	    try (Connection connection = getConnection();
+	         PreparedStatement statement = connection.prepareStatement(sql)) {
+	        
+	        statement.setString(1, test.getStudentNo());
+	        statement.setString(2, test.getSubjectCd());
+	        statement.setString(3, test.getSchool().getCd());
+	        statement.setInt(4, test.getNo());
+	        statement.setInt(5, test.getPoint());
+	        // ここでBeanにセットした値がDBに飛びます
+	        statement.setString(6, test.getClassNum()); 
+
+	        return statement.executeUpdate() > 0;
+	    }
+	}
     public boolean updatePoint(Test test) throws Exception {
 
         String sql =
