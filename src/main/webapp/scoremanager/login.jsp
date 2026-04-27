@@ -5,7 +5,7 @@
     <c:param name="title">
         得点管理システム
     </c:param>
-
+ 
     <c:param name="scripts">
 	<script>
 	
@@ -13,7 +13,7 @@
     </c:param>
     <c:param name="styles">
     </c:param>
-
+ 
     <c:param name="content">
 		<form class="login-form" action="Login.action" method="post">
 			<h2 style="text-align: center;">ログイン</h2>
@@ -25,11 +25,11 @@
 			<div style="position: relative; margin:0 auto; width:100%; display: flex; justify-content: center;">
 			<input name="password" id="login-password" type="password" value="password" placeholder="30文字以内の半角英数字でご入力ください" required maxlength="30" pattern="^[a-zA-Z0-9]+$" title="半角英数字で入力してください">
 			</div>			
-			<div class="password-show"><input name="chk_d_ps" type="checkbox">パスワードの表示</div>
+			<div class="password-show"><input id="preview" name="chk_d_ps" type="checkbox">パスワードの表示</div>
 			<input name="login" type="submit" value="ログイン">
 			
 		</form>
-		<style>
+		<style>eg
 			.login-form{
 			border: 1px solid #EEEEEE;
 			display: flex;
@@ -62,5 +62,24 @@
 			margin: 10px auto;
 			}
 		</style>
+		
+	<script>
+      document.addEventListener('DOMContentLoaded', function (event) {
+            const input = document.getElementById("login-password");
+            const check = document.getElementById("preview");
+     
+            check.addEventListener('change', function () {
+                console.log("触った");
+                if (check.checked) {
+                    input.type = 'text';
+                } else {
+                    input.type = 'password';
+                }
+            });
+        });    
+    </script>
+ 
+ 
     </c:param>
 </c:import>
+ 
