@@ -16,5 +16,6 @@
 
     <c:param name="content">
 	<p>エラーが発生しました。</p>
+	<p>${errors.printStackTrace()}</p>
     </c:param>
 </c:import>
