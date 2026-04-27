@@ -57,9 +57,12 @@
 		    color: white;
 		    border: none;
 		    border-radius: 10px;
-			}
+		    display: flex;
+    		justify-content: center;			}
 			.password-show{
 			margin: 10px auto;
+		    display: flex;
+    		justify-content: center;
 			}
 		</style>
 		
