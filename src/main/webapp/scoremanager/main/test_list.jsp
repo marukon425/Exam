@@ -70,26 +70,27 @@
 
         <!-- 下段: 学生情報（ラベル左、入力＋ボタン右 横並び） -->
         <div class="row align-items-center">
-          <div class="col-auto" style="min-width:100px;">
-            <strong>学生情報</strong>
-          </div>
-
-          <div class="col">
-            <!-- 学生番号検索フォーム（独立フォーム） -->
-            <form method="get" action="TestListStudentExecute.action" role="search" aria-label="学生番号検索" class="d-flex flex-wrap align-items-end gap-2">
-              <input type="hidden" name="f4" value="student" />
-
-              <div class="d-flex flex-column">
-                <label class="form-label mb-1" for="studentId">学生番号</label>
-                <input id="studentId" name="studentId" type="text" class="form-control form-control-sm" placeholder="学生番号を入力してください" value="${fn:escapeXml(param.studentId)}" style="min-width:220px;" />
-              </div>
-
-              <div class="d-flex align-items-end">
-                <button class="btn btn-secondary" id="filter-button" style="margin-left: 30px;">検索</button>
-              </div>
-            </form>
-          </div>
-        </div>
+		  <div class="col-auto" style="min-width:100px;">
+		    <strong>学生情報</strong>
+		  </div>
+		
+		  <div class="col">
+		    <form method="get" action="TestListStudentExecute.action" role="search" aria-label="学生番号検索" class="d-flex flex-wrap align-items-end gap-2">
+		      <input type="hidden" name="type" value="student" />
+		
+		      <div class="d-flex flex-column">
+		        <label class="form-label mb-1" for="studentId">学生番号</label>
+		        <input id="studentId" name="f4" type="text" class="form-control form-control-sm" 
+		               placeholder="学生番号を入力してください" 
+		               value="${fn:escapeXml(param.studentId)}" 
+		               style="min-width:220px;" required />
+		      </div>
+		      <div class="d-flex align-items-end">
+		        <button type="submit" class="btn btn-secondary" style="margin-left: 30px;">検索</button>
+		      </div>
+		    </form>
+		  </div>
+		</div>
         
     </section>
     <p style="color: #00B0F0;">科目情報または学生情報を入力して検索ボタンをクリックしてください</p>

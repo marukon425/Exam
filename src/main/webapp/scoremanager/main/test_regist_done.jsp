@@ -16,7 +16,7 @@
 			<p><label style="width:100%; background-color:#8CC3A9; text-align:center; margin: 1px 0px 10%; ">登録が完了しました</label></p>
             
             <a href="TestRegist.action">戻る</a>
-            <a href="" style="margin:40px">成績参照</a>
+            <a href="TestList.action" style="margin:40px">成績参照</a>
         </section>
     </c:param>
 </c:import>
