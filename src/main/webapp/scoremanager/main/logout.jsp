@@ -20,7 +20,7 @@
 
 
 			<div class="mt-3 px-4">
-			    <a href="../login.jsp">ログイン</a>
+			    <a href="/point/scoremanager/Login.action">ログイン</a>
 			</div>
 
         </section>

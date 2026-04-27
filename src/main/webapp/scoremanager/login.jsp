@@ -15,7 +15,7 @@
     </c:param>
  
     <c:param name="content">
-		<form class="login-form" action="Login.action" method="post">
+		<form class="login-form" action="LoginExecute.action" method="post">
 			<h2 style="text-align: center;">ログイン</h2>
 			<p>${notlogin}</p>
 			<div style="position: relative; margin:0 auto; width:100%; display: flex; justify-content: center;">
