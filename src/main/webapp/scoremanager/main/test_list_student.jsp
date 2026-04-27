@@ -41,7 +41,7 @@
 			              		<select id="f2" name="f2" class="form-select form-select-sm" style="min-width:120px;">
 			                		<option value="">--------</option>
 			                		<c:forEach var="num" items="${class_num_set}">
-			                  			<option value="${num}" <c:if test="${param.f2 == num}">selected</c:if>>${num}組</option>
+			                  			<option value="${num}" <c:if test="${param.f2 == num}">selected</c:if>>${num}</option>
 			                		</c:forEach>
 			              		</select>
 			            	</div>
@@ -50,8 +50,8 @@
 			              		<label class="form-label mb-1" for="subject">科目</label>
 			              		<select id="subject" name="subject" class="form-select form-select-sm" style="min-width:260px;">
 			                		<option value="">--------</option>
-			                		<c:forEach var="entry" items="">
-			                  			<option value="" <c:if test="">selected</c:if>></option>
+			                		<c:forEach var="subject" items="${subjects}">
+			                  			<option value="${subject.cd}" <c:if test="${subject.cd == f3 }">selected</c:if>>${subject.name }</option>
 			                		</c:forEach>
 			              		</select>
 			            	</div>
@@ -69,57 +69,58 @@
 		    	<hr>
 		
 		    	<!-- 下段: 学生情報（ラベル左、入力＋ボタン右 横並び） -->
-		    	<div class="row align-items-center">
-		     		<div class="col-auto" style="min-width:100px;">
-			          	<strong>学生情報</strong>
-			        </div>
+		    	
+			   <div class="row align-items-center">
+		  			<div class="col-auto" style="min-width:100px;">
+		    			<strong>学生情報</strong>
+		  			</div>
 		
-			       	<div class="col">
-			          	<!-- 学生番号検索フォーム（独立フォーム） -->
-			          	<form method="get" action="TestListStudentExecute.action" role="search" aria-label="学生番号検索" class="d-flex flex-wrap align-items-end gap-2">
-			            	<input type="hidden" name="type" value="student" />
-			
-			            	<div class="d-flex flex-column">
-			              		<label class="form-label mb-1" for="studentId">学生番号</label>
-			              		<input id="studentId" name="studentId" type="text" class="form-control form-control-sm" placeholder="学生番号を入力してください" value="${fn:escapeXml(param.studentId)}" style="min-width:220px;" />
-			            	</div>
-			
-			            	<div class="d-flex align-items-end">
-			              		<button class="btn btn-secondary" id="filter-button" style="margin-left: 30px;">検索</button>
-			            	</div>
-			          	</form>
-			       </div>
-			   </div>
-		   </div>
+		  			<div class="col">
+		    			<form method="get" action="TestListStudentExecute.action" role="search" aria-label="学生番号検索" class="d-flex flex-wrap align-items-end gap-2">
+		      				<input type="hidden" name="type" value="student" />
+		
+		      				<div class="d-flex flex-column">
+		        				<label class="form-label mb-1" for="studentId">学生番号</label>
+		        				<input id="studentId" name="f4" type="text" class="form-control form-control-sm" 
+		               					placeholder="学生番号を入力してください" 
+		               					value="${fn:escapeXml(param.studentId)}" 
+		               					style="min-width:220px;" required />
+		      				</div>
+		      				<div class="d-flex align-items-end">
+		        				<button type="submit" class="btn btn-secondary" style="margin-left: 30px;">検索</button>
+		      				</div>
+		    			</form>
+		  			</div>
+				</div>
+			</div>
+
+		   <div class="ms-3 mb-2">
+           		<c:if test="${not empty student}">
+               		氏名：${student.name}（${student.no}）
+           		</c:if>
+	       	</div>
 		   <c:choose>
 		       <c:when test="${tests.size() > 0}">
-		           	<div class="ms-3 mb-2">
-			       		<c:forEach var="student" items="${students}">
-			           		<c:if test="${student.no == f1}">
-			               		氏名：${student.name}（${f1}）
-			           		</c:if>
-			       		</c:forEach>
-						<table class="table mx-3">
-							<thead class="table-light border-bottom">
-			                 	<tr>
-			                     	<th>科目名</th>
-									<th>科目コード</th>
-									<th>回数</th>
-									<th>点数</th>
-			                 	</tr>
-			                 </thead>
-			                 <thead>
-				                 <c:forEach var="test" items="${tests}">
-				                     <tr class="border-bottom">
-				                         <td>${test.subject_Name}</td>
-				                         <td>${test.subject_Cd }</td>
-				                         <td>${test.no }</td>
-				                         <td>${test.point}</td>					
-				                     </tr>
-				                 </c:forEach>
-							</thead>
-		         		</table>
-			        </div>
+					<table class="table mx-3">
+						<thead class="table-light border-bottom">
+		                 	<tr>
+		                     	<th>科目名</th>
+								<th>科目コード</th>
+								<th>回数</th>
+								<th>点数</th>
+		                 	</tr>
+		                 </thead>
+		                 <thead>
+			                 <c:forEach var="test" items="${tests}">
+			                     <tr class="border-bottom">
+			                         <td>${test.subjectName}</td>
+			                         <td>${test.subjectCd }</td>
+			                         <td>${test.no }</td>
+			                         <td>${test.point}</td>					
+			                     </tr>
+			                 </c:forEach>
+						</thead>
+	         		</table>
 		       </c:when> 
 		       <c:otherwise>
                     <div>成績情報が存在しませんでした。</div>

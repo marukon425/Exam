@@ -4,10 +4,12 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import bean.Student;
 import bean.Subject;
 import bean.Teacher;
 import bean.Test;
 import dao.ClassNumDao;
+import dao.StudentDao;
 import dao.SubjectDao;
 import dao.TestListStudentDao;
 import jakarta.servlet.http.HttpServletRequest;
@@ -58,18 +60,21 @@ public class TestListStudentExecuteAction extends Action {
         String studentNo = request.getParameter("f4");// 選択された学生番号
 		
         tests = tDao.filter(studentNo);
+        StudentDao studentDao = new StudentDao();
+        Student student = studentDao.get(studentNo);
 
-
-		if (tests == null) {
+		if (tests == null || studentNo.isEmpty()) {
 			// 学生が存在しない場合
-			request.setAttribute("error", "学生が見つかりませんでした");
-			return "test_list_student.jsp";
+			request.setAttribute("error", "このフィールドを入力してください ");
+			return "test_list.jsp";
 		}
+		
 
 
 		// JSPへ渡すデータをセット
 		request.setAttribute("tests", tests);
 		request.setAttribute("f4", studentNo);
+		request.setAttribute("student", student);
 
 		return "test_list_student.jsp";
 	}
