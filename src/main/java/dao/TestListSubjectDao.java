@@ -14,102 +14,107 @@ import bean.TestListSubject;
 
 public class TestListSubjectDao extends Dao {
 
-	// SQL文
-	private String baseSql =
-		"select st.ent_year, st.no as student_no, st.name as student_name, " +
-		"st.class_num, t.num, t.point " +
-		"from student st " +
-		"left join test t on st.no = t.student_no and t.subject_cd = ? " +
-		"where st.school_cd = ? " +
-		"and st.ent_year = ? " +
-		"and st.class_num = ? " +
-		"and st.is_attend = true " +
-		"order by st.no asc, t.num asc";
+    // SQL文
+    private String baseSql =
+        "select st.ent_year, st.no as student_no, st.name as student_name, " +
+        "st.class_num, t.no as test_no, t.point " +
+        "from student st " +
+        "left join test t on st.no = t.student_no and t.subject_cd = ? " +
+        "where st.school_cd = ? " +
+        "and st.ent_year = ? " +
+        "and st.class_num = ? " +
+        "order by st.no asc, t.no asc";
 
-	private List<TestListSubject> postFilter(ResultSet rSet) throws Exception {
-		// リスト初期化
-		List<TestListSubject> list = new ArrayList<>();
+    private List<TestListSubject> postFilter(ResultSet rSet) throws Exception {
+        List<TestListSubject> list = new ArrayList<>();
 
-		try {
-			while (rSet.next()) {
-				// 学生番号を取得
-				String studentNo = rSet.getString("student_no");
+        try {
+            while (rSet.next()) {
 
-				// 同じ学生が既にリストに存在するか確認
-				TestListSubject existing = null;
-				for (TestListSubject t : list) {
-					if (t.getStudentNo().equals(studentNo)) {
-						existing = t;
-						break;
-					}
-				}
+                String studentNo = rSet.getString("student_no");
 
-				if (existing == null) {
-					TestListSubject testListSubject = new TestListSubject();
-					testListSubject.setEntYear(rSet.getInt("ent_year"));
-					testListSubject.setStudentNo(studentNo);
-					testListSubject.setStudentName(rSet.getString("student_name"));
-					testListSubject.setClassNum(rSet.getString("class_num"));
-					testListSubject.setPoints(new HashMap<>());
-					int point = rSet.getInt("point");
-					if (!rSet.wasNull()) {
-						testListSubject.putPoint(String.valueOf(rSet.getInt("num")), point);
-					}
-					list.add(testListSubject);
-				} else {
-					// 既存の学生の場合 → 点数のみ追加
-					int point = rSet.getInt("point");
-					if (!rSet.wasNull()) {
-						existing.putPoint(String.valueOf(rSet.getInt("num")), point);
-					}
-				}
-			}
-		} catch (SQLException | NullPointerException e) {
-			e.printStackTrace();
-		}
+                Integer testNo  = (Integer) rSet.getObject("test_no");
+                Integer point   = (Integer) rSet.getObject("point");
 
-		return list;
-	}
+                TestListSubject existing = null;
+                for (TestListSubject t : list) {
+                    if (t.getStudentNo().equals(studentNo)) {
+                        existing = t;
+                        break;
+                    }
+                }
 
-	// 入学年度・クラス・科目をもとに成績一覧を取得
-	public List<TestListSubject> filter(int entYear, String classNum,
-			Subject subject, School school) throws Exception {
-		// リストを初期化
-		List<TestListSubject> list = new ArrayList<>();
-		// コネクションを確立
-		Connection connection = getConnection();
-		// プリペアードステートメント
-		PreparedStatement statement = null;
-		// リザルトセット
-		ResultSet rSet = null;
+                if (existing == null) {
+                    TestListSubject tls = new TestListSubject();
+                    tls.setEntYear(rSet.getInt("ent_year"));
+                    tls.setStudentNo(studentNo);
+                    tls.setStudentName(rSet.getString("student_name"));
+                    tls.setClassNum(rSet.getString("class_num"));
+                    tls.setPoints(new HashMap<>());
 
-		try {
-			statement = connection.prepareStatement(baseSql);
-			statement.setString(1, subject.getCd());
-			statement.setString(2, school.getCd());
-			statement.setInt(3, entYear);
-			statement.setString(4, classNum);
-			rSet = statement.executeQuery();
-			list = postFilter(rSet);
-		} catch (Exception e) {
-			throw e;
-		} finally {
-			if (statement != null) {
-				try {
-					statement.close();
-				} catch (SQLException sqle) {
-					throw sqle;
-				}
-			}
-			if (connection != null) {
-				try {
-					connection.close();
-				} catch (SQLException sqle) {
-					throw sqle;
-				}
-			}
-		}
+                    if (testNo != null && point != null) {
+                        tls.putPoint(String.valueOf(testNo), point);
+                    }
 
-		return list;
-	}
+                    list.add(tls);
+                } else {
+                    if (testNo != null && point != null) {
+                        existing.putPoint(String.valueOf(testNo), point);
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return list;
+    }
+
+    public List<TestListSubject> filter(
+            int entYear,
+            String classNum,
+            Subject subject,
+            School school
+    ) throws Exception {
+
+        List<TestListSubject> list;
+
+        try (
+            Connection connection = getConnection();
+            PreparedStatement statement = connection.prepareStatement(baseSql)
+        ) {
+            statement.setString(1, subject.getCd());
+            statement.setString(2, school.getCd());
+            statement.setInt(3, entYear);
+            statement.setString(4, classNum);
+
+            try (ResultSet rSet = statement.executeQuery()) {
+                list = postFilter(rSet);
+            }
+        }
+
+        return list;
+    }
+
+    public List<TestListSubject> filterForSubjectList(
+            int entYear,
+            String classNum,
+            Subject subject,
+            School school
+    ) throws Exception {
+
+        List<TestListSubject> list = filter(entYear, classNum, subject, school);
+
+        for (TestListSubject tls : list) {
+            if (tls.getPoints() == null) {
+                tls.setPoints(new HashMap<>());
+            }
+
+            // 1回・2回を必ず用意（既存値は壊さない）
+            tls.getPoints().putIfAbsent("1", null);
+            tls.getPoints().putIfAbsent("2", null);
+        }
+
+        return list;
+    }
 }

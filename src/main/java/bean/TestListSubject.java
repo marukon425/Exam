@@ -18,7 +18,8 @@ public class TestListSubject implements Serializable {
     private String classNum;
 
     // 点数マップ
-    private Map<Integer, Integer> points;
+    private Map<String, Integer> points;
+
 
     // ゲッター・セッター
     public int getEntYear() {
@@ -53,19 +54,22 @@ public class TestListSubject implements Serializable {
         this.classNum = classNum;
     }
 
-    public Map<Integer, Integer> getPoints() {
+    public Map<String, Integer> getPoints() {
         return points;
+    
     }
 
-    public void setPoints(Map<Integer, Integer> points) {
+    public void setPoints(Map<String, Integer> points) {
         this.points = points;
     }
 
+
     public Integer getPoint(String key) {
-        return points.get(Integer.parseInt(key));
+        return points.get(key);
     }
 
     public void putPoint(String key, Integer value) {
-        points.put(Integer.parseInt(key), value);
+        points.put(key, value);
     }
+
 }
