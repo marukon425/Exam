@@ -14,17 +14,17 @@
             <div class="row text-center px-4 fs-3 my-5">
                 <div class="col d-flex align-items-center justify-content-center mx-2 rounded shadow"
                     style="height: 10rem; background-color: #dbb;">
-                    <a href="../scoremanager/main/StudentList.action">学生管理</a>
+                    <a href="${pageContext.request.contextPath}/scoremanager/main/StudentList.action">学生管理</a>
                 </div>
                 <div class="col d-flex align-items-center justify-content-center mx-2 rounded shadow"
                     style="height: 10rem; background-color: #bdb;">
                     <div>
                         <div class="">成績管理</div>
                         <div class="">
-                            <a href="../scoremanager/main/TestRegist.action">成績登録</a>
+                            <a href="${pageContext.request.contextPath}/scoremanager/main/TestRegist.action">成績登録</a>
                         </div>
                         <div class="">
-                            <a href="../scoremanager/main/TestList.action">成績参照</a>
+                            <a href="${pageContext.request.contextPath}/scoremanager/main/TestList.action">成績参照</a>
                         </div>
                     </div>
                 </div>
