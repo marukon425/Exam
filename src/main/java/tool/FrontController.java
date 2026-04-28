@@ -40,7 +40,7 @@ public class FrontController extends HttpServlet {
             e.printStackTrace();
             // エラーページへリダイレクト
             req.setAttribute("errors", e);
-            req.getRequestDispatcher("/scoremanager/main/TestRegist.action").forward(req, res);
+            req.getRequestDispatcher("../../error.jsp").forward(req, res);
         }
     }
     
