@@ -62,6 +62,7 @@
 			              		<button class="btn btn-secondary" id="filter-button" style="margin-left:20px;">検索</button>
 			           		</div>
 			          	</form>
+			          	<div style="border:none;color:#FFCC00;">${error}</div>
 		       		</div>
 		       	</div>
 		      
@@ -93,10 +94,20 @@
  
     </section>
 
-    <!-- 科目表示 -->
-    <div class="ms-3 mb-2">
-      <label>科目：${subject.name}</label>
-    </div>
+    <%-- 科目表示 --%>
+    <%-- データが1剣でもある場合 --%>
+    <c:if test="${not empty studentList}">
+	  	<div class="ms-3 mb-2">
+	    	<label>科目：${subject.name}</label>
+	  	</div>
+	</c:if>
+	
+	<%-- データが空の場合 --%>
+	<c:if test="${empty studentList}">
+	  	<div class="ms-3 text">
+	    	学生情報が存在しませんでした
+	  	</div>
+	</c:if>
 
     <style>
   table {
@@ -163,7 +174,6 @@
 
 	</c:when>
     <c:otherwise>
-        <div>成績情報が存在しませんでした。</div>
     </c:otherwise>
 </c:choose>
  
