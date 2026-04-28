@@ -180,6 +180,18 @@ public class SubjectDao extends Dao {
 
         return count<0;
 	}
+	
+	public boolean delete(String cd) throws Exception {
+	    String sql = "delete from subject where cd=?";
+	    try (Connection connection = getConnection();
+	         PreparedStatement statement = connection.prepareStatement(sql)) {
+	        statement.setString(1, cd);
+	        
+	        int count = statement.executeUpdate();
+	        
+	        return count > 0;
+	    }
+	}
 		
 	
 	public boolean save(Subject subject) throws Exception {
