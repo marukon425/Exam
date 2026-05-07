@@ -19,7 +19,7 @@ public class TestListStudentDao extends Dao {
 		"where t.student_no = ? " +
 		"order by t.subject_cd asc, t.no asc";
 
-	public Test get(int no) throws Exception {
+	public Test get(String student_No, String subject_Cd, int no) throws Exception {
 		Test test = new Test();
 		 // データベースへのコネクションを確立
         Connection connection = getConnection();
@@ -28,9 +28,15 @@ public class TestListStudentDao extends Dao {
         
         try {
         	// プリペアードステートメントにSQL文をセット
-            statement = connection.prepareStatement("select * from test where no=?");
-            // プリペアードステートメントに科目コードをバインド
-            statement.setInt(1, no);
+            statement = connection.prepareStatement(
+            		"select t.student_no, s.name as student_name, t.subject_cd,  c.name as subject_name, t.no, t.point, t.school_cd" +
+            		" from test t join student s on t.student_no = s.no"+
+            		" join subject c on t.subject_cd = c.cd"+
+            		" where t.student_no=? and t.subject_cd=? and t.no=?");
+            
+            statement.setString(1, student_No);
+            statement.setString(2, subject_Cd);
+            statement.setInt(3, no);
             // プリペアードステートメントを実行
             ResultSet rSet = statement.executeQuery();
             
@@ -39,7 +45,12 @@ public class TestListStudentDao extends Dao {
             
             if (rSet.next()) {
 
+            	test.setStudentNo(rSet.getString("student_no"));
+            	test.setStudentName(rSet.getString("student_name"));
+            	test.setSubjectCd(rSet.getString("subject_cd"));
+            	test.setSubjectName(rSet.getString("subject_name"));
             	test.setNo(rSet.getInt("no"));
+            	test.setPoint(rSet.getInt("point"));
 
                 test.setSchool(schoolDao.get(rSet.getString("school_cd")));
             } else {
@@ -130,6 +141,20 @@ public class TestListStudentDao extends Dao {
 		}
 
 		return list;
+	}
+	
+	public boolean delete(String student_No, String subject_Cd, int no) throws Exception {
+	    String sql = "delete from test where student_no=? and subject_cd=? and no=?";
+	    try (Connection connection = getConnection();
+	         PreparedStatement statement = connection.prepareStatement(sql)) {
+	    	 statement.setString(1, student_No);
+	         statement.setString(2, subject_Cd);
+	         statement.setInt(3, no);
+	        
+	        int count = statement.executeUpdate();
+	        
+	        return count > 0;
+	    }
 	}
 	
 	public boolean save(Test test) throws Exception {

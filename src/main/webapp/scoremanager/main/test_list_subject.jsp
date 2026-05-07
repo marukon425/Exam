@@ -95,15 +95,15 @@
     </section>
 
     <%-- 科目表示 --%>
-    <%-- データが1剣でもある場合 --%>
-    <c:if test="${not empty studentList}">
+    <%-- データが1件でもある場合 --%>
+    <c:if test="${not empty tests}">
 	  	<div class="ms-3 mb-2">
 	    	<label>科目：${subject.name}</label>
 	  	</div>
 	</c:if>
 	
 	<%-- データが空の場合 --%>
-	<c:if test="${empty studentList}">
+	<c:if test="${empty tests}">
 	  	<div class="ms-3 text">
 	    	学生情報が存在しませんでした
 	  	</div>
@@ -168,6 +168,7 @@
               <c:otherwise>-</c:otherwise>
             </c:choose>
           </td>
+          <td><a href="TestListSubjectDelete.action?student_No=${test.studentNo}&subject_Cd=${subject.cd}">削除</a></td>
         </tr>
       </c:forEach>
     </table>

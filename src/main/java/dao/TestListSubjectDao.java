@@ -19,7 +19,7 @@ public class TestListSubjectDao extends Dao {
         "select st.ent_year, st.no as student_no, st.name as student_name, " +
         "st.class_num, t.no as test_no, t.point " +
         "from student st " +
-        "left join test t on st.no = t.student_no and t.subject_cd = ? " +
+        "join test t on st.no = t.student_no and t.subject_cd = ? " +
         "where st.school_cd = ? " +
         "and st.ent_year = ? " +
         "and st.class_num = ? " +
@@ -95,6 +95,7 @@ public class TestListSubjectDao extends Dao {
 
         return list;
     }
+   
 
     public List<TestListSubject> filterForSubjectList(
             int entYear,
