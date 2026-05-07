@@ -39,4 +39,6 @@ jobs:
           script: |
             sudo cp /tmp/target/point-0.0.1-SNAPSHOT.war /opt/tomcat/webapps/ROOT.war
             sudo /opt/tomcat/bin/shutdown.sh || true
+            sleep 3
             sudo /opt/tomcat/bin/startup.sh
+            sudo iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 8080
