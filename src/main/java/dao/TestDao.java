@@ -104,22 +104,19 @@ public class TestDao extends Dao {
     }
 
 	public boolean upsertPoint(Test test) throws Exception {
-	    String sql = "MERGE INTO test " +
-	                 "(student_no, subject_cd, school_cd, no, point, class_num) " +
-	                 "KEY (student_no, subject_cd, school_cd, no) " +
-	                 "VALUES (?, ?, ?, ?, ?, ?)";
+	    String sql = "INSERT INTO test (student_no, subject_cd, school_cd, no, point, class_num) " +
+	                 "VALUES (?, ?, ?, ?, ?, ?) " +
+	                 "ON CONFLICT (student_no, subject_cd, school_cd, no) " +
+	                 "DO UPDATE SET point = EXCLUDED.point, class_num = EXCLUDED.class_num";
 
 	    try (Connection connection = getConnection();
 	         PreparedStatement statement = connection.prepareStatement(sql)) {
-	        
 	        statement.setString(1, test.getStudentNo());
 	        statement.setString(2, test.getSubjectCd());
 	        statement.setString(3, test.getSchool().getCd());
 	        statement.setInt(4, test.getNo());
 	        statement.setInt(5, test.getPoint());
-	        // ここでBeanにセットした値がDBに飛びます
-	        statement.setString(6, test.getClassNum()); 
-
+	        statement.setString(6, test.getClassNum());
 	        return statement.executeUpdate() > 0;
 	    }
 	}
