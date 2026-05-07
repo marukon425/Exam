@@ -11,35 +11,30 @@ import bean.Teacher;
 public class TeacherDao extends Dao {
     public Teacher search(String login, String password)
             throws Exception {
-    		Teacher teacher = null;
-    		School school = null;
+        Teacher teacher = null;
+        School school = null;
 
-            Connection con = getConnection();
+        Connection con = getConnection();
 
-            PreparedStatement st;
-            st = con.prepareStatement(
-                "select * from TEACHER  where ID=? and PASSWORD=?");
-            st.setString(1, login);
-            st.setString(2, password);
-            ResultSet rs = st.executeQuery();
+        PreparedStatement st;
+        st = con.prepareStatement(
+            "select * from teacher where id=? and password=?");
+        st.setString(1, login);
+        st.setString(2, password);
+        ResultSet rs = st.executeQuery();
 
-            while (rs.next()) {
-            	teacher = new Teacher();
-            	school = new School();
-            	school.setCd(rs.getString("SCHOOL_CD"));
-            	teacher.setId(rs.getString("ID"));
-            	teacher.setPassword(rs.getString("PASSWORD"));
-            	teacher.setName(rs.getString("NAME"));
-                teacher.setSchool(school);
-                
-                //customer.setName(rs.getString("NAME"));
-                // school が別テーブルならここではセットしない
-            }
-
-
-            st.close();
-            con.close();
-            return teacher;
+        while (rs.next()) {
+            teacher = new Teacher();
+            school = new School();
+            school.setCd(rs.getString("school_cd"));
+            teacher.setId(rs.getString("id"));
+            teacher.setPassword(rs.getString("password"));
+            teacher.setName(rs.getString("name"));
+            teacher.setSchool(school);
         }
 
+        st.close();
+        con.close();
+        return teacher;
+    }
 }
