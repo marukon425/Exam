@@ -42,8 +42,8 @@
                         <label class="form-check-label" for="student-f3-check">在学中
                             <%-- パラメーターf3が存在している場合checkedを追記 --%>
                             <input class="form-check-input" type="checkbox"
-                                id="student-f3-check" name="f3" value="t">
-                            <c:if test="${!empty f3 }">checked</c:if>
+                                id="student-f3-check" name="f3" value="t"
+                            <c:if test="${!empty f3 }">checked</c:if>>
                         </label>
                     </div>
 
