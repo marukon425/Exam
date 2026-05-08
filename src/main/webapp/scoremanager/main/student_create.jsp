@@ -27,7 +27,7 @@
 				
 				<div class="col-4">
                     <label class="form-label" name="">学生番号</label>
-                    <input type="text" style="width:300%; padding: 7px 7px; border-radius: 5px;  border: 1px solid #ced4da;" placeholder="学生番号を入力してください" class="form-input" name="no" value="${no }" required>
+                    <input type="text" style="width:300%; padding: 7px 7px; border-radius: 5px;  border: 1px solid #ced4da;" placeholder="学生番号を入力してください" class="form-input" name="no" value="${no }" required  maxlength="10">
                     <div style="color: #FFCC00;">${notaddd}</div>
                 </div>
                 
