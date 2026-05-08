@@ -44,6 +44,10 @@ public class StudentListAction extends Action {
 	        // 数値に変換
 	        entYear = Integer.parseInt(entYearStr);
 	    }
+	    
+	    
+	    //  在学フラグの変換
+        isAttend = "t".equals(isAttendStr);
 
 	    // リストを初期化
 	    List<Integer> entYearSet = new ArrayList<>();
