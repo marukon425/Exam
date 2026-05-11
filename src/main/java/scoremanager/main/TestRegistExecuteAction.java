@@ -52,13 +52,14 @@ public class TestRegistExecuteAction extends Action {
         }
         request.setAttribute("times", times);
 
-		String f1 = request.getParameter("f1") != null ? request.getParameter("f1").trim() : null;
-		String f2 = request.getParameter("f2") != null ? request.getParameter("f2").trim() : null;
-		String f3 = request.getParameter("f3") != null ? request.getParameter("f3").trim() : null;
-		String f4 = request.getParameter("f4") != null ? request.getParameter("f4").trim() : null;
-		
-		String subjectCdParam = request.getParameter("subject") != null ? request.getParameter("subject").trim() : null;
-		String countStr = request.getParameter("count") != null ? request.getParameter("count").trim() : null;
+		String f1 = request.getParameter("f1"); // 入学年度
+        String f2 = request.getParameter("f2"); // クラス
+        String f3 = request.getParameter("f3"); // 科目
+        String f4 = request.getParameter("f4"); // 回数
+
+        String subjectCdParam = request.getParameter("subject");
+        String countStr = request.getParameter("count");
+
 
         // 値の調整（hidden から取れなければフィルタの f3, f4 を使う）
         String subjectCd = (subjectCdParam != null) ? subjectCdParam : f3;
