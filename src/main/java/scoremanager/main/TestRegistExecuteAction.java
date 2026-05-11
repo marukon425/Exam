@@ -52,15 +52,14 @@ public class TestRegistExecuteAction extends Action {
         }
         request.setAttribute("times", times);
 
-
-        String f1 = request.getParameter("f1"); // 入学年度
-        String f2 = request.getParameter("f2"); // クラス
-        String f3 = request.getParameter("f3"); // 科目
-        String f4 = request.getParameter("f4"); // 回数
-
-        String subjectCdParam = request.getParameter("subject");
-        String countStr = request.getParameter("count");
-
+		String f1 = request.getParameter("f1") != null ? request.getParameter("f1").trim() : null;
+		String f2 = request.getParameter("f2") != null ? request.getParameter("f2").trim() : null;
+		String f3 = request.getParameter("f3") != null ? request.getParameter("f3").trim() : null;
+		String f4 = request.getParameter("f4") != null ? request.getParameter("f4").trim() : null;
+		
+		String subjectCdParam = request.getParameter("subject") != null ? request.getParameter("subject").trim() : null;
+		String countStr = request.getParameter("count") != null ? request.getParameter("count").trim() : null;
+		
         // 値の調整（hidden から取れなければフィルタの f3, f4 を使う）
         String subjectCd = (subjectCdParam != null) ? subjectCdParam : f3;
         String finalCountStr = (countStr != null) ? countStr : f4;
@@ -136,75 +135,5 @@ public class TestRegistExecuteAction extends Action {
     }
 }
 
-//        if (f1 != null && f2 != null && f3 != null && f4 != null &&
-//            !f1.isEmpty() && !f2.isEmpty() && !f3.isEmpty() && !f4.isEmpty()) {
-//
-//            TestDao testDao = new TestDao();
-//            List<Test> tests = testDao.filter(
-//                    teacher.getSchool(),
-//                    Integer.parseInt(f1),
-//                    f2,
-//                    f3,
-//                    Integer.parseInt(f4)
-//            );
-//
-//            request.setAttribute("tests", tests);
-//
-//
-//            request.setAttribute("canRegist", true);
-//        }
-//        
-//        
-//
-//        if (request.getParameterMap().keySet().stream()
-//                .anyMatch(key -> key.startsWith("point_"))) {
-//
-//        	TestDao updateDao = new TestDao();
-//
-//        	String subjectCd = request.getParameter("subject");
-//        	int no = Integer.parseInt(request.getParameter("count"));
-//
-//        	for (String key : request.getParameterMap().keySet()) {
-//
-//        	    if (key.startsWith("point_")) {
-//
-//        	        String studentNo = key.replace("point_", "");
-//        	        String pointStr = request.getParameter(key);
-//
-//        	        if (pointStr == null || pointStr.isEmpty()) {
-//        	            continue;
-//        	        }
-//
-//        	        int point = Integer.parseInt(pointStr);
-//
-//        	        if (point < 0 || point > 100) {
-//        	            request.setAttribute("error", "点数は0〜100の範囲で入力してください。");
-//        	            return "test_regist.jsp";
-//        	        }
-//
-//        	        Test test = new Test();
-//        	        test.setStudentNo(studentNo);
-//        	        test.setSubjectCd(subjectCd);
-//        	        test.setNo(no);
-//        	        test.setPoint(point);
-//        	        test.setSchool(teacher.getSchool());
-//
-//        	        // ★ ここで確実に UPDATE
-//        	        updateDao.updatePoint(test);
-//        	    }
-//        	
-//        	
-//                }
-//            
-//
-//            // 登録完了画面へ
-//            return "test_regist_done.jsp";
-//        }
-//    
-//
-//        return "test_regist.jsp";
-//    }
-//    
-//    
 //}
 //
