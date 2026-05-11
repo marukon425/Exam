@@ -124,9 +124,16 @@ public class TestRegistExecuteAction extends Action {
                 request.setAttribute("tests", tests);
                 return "test_regist.jsp";
             }
-
-            for (Test saveTest : saveList) {
-                updateDao.upsertPoint(saveTest);
+            try {
+            	for (Test saveTest : saveList) {
+                    updateDao.upsertPoint(saveTest);
+                }
+                
+            }catch (Exception e) {
+                // エラー内容を JSP に渡す
+                request.setAttribute("e",e);
+                // エラーページへフォワード
+                return "regist_error.jsp";
             }
             
             return "test_regist_done.jsp";
@@ -136,75 +143,3 @@ public class TestRegistExecuteAction extends Action {
     }
 }
 
-//        if (f1 != null && f2 != null && f3 != null && f4 != null &&
-//            !f1.isEmpty() && !f2.isEmpty() && !f3.isEmpty() && !f4.isEmpty()) {
-//
-//            TestDao testDao = new TestDao();
-//            List<Test> tests = testDao.filter(
-//                    teacher.getSchool(),
-//                    Integer.parseInt(f1),
-//                    f2,
-//                    f3,
-//                    Integer.parseInt(f4)
-//            );
-//
-//            request.setAttribute("tests", tests);
-//
-//
-//            request.setAttribute("canRegist", true);
-//        }
-//        
-//        
-//
-//        if (request.getParameterMap().keySet().stream()
-//                .anyMatch(key -> key.startsWith("point_"))) {
-//
-//        	TestDao updateDao = new TestDao();
-//
-//        	String subjectCd = request.getParameter("subject");
-//        	int no = Integer.parseInt(request.getParameter("count"));
-//
-//        	for (String key : request.getParameterMap().keySet()) {
-//
-//        	    if (key.startsWith("point_")) {
-//
-//        	        String studentNo = key.replace("point_", "");
-//        	        String pointStr = request.getParameter(key);
-//
-//        	        if (pointStr == null || pointStr.isEmpty()) {
-//        	            continue;
-//        	        }
-//
-//        	        int point = Integer.parseInt(pointStr);
-//
-//        	        if (point < 0 || point > 100) {
-//        	            request.setAttribute("error", "点数は0〜100の範囲で入力してください。");
-//        	            return "test_regist.jsp";
-//        	        }
-//
-//        	        Test test = new Test();
-//        	        test.setStudentNo(studentNo);
-//        	        test.setSubjectCd(subjectCd);
-//        	        test.setNo(no);
-//        	        test.setPoint(point);
-//        	        test.setSchool(teacher.getSchool());
-//
-//        	        // ★ ここで確実に UPDATE
-//        	        updateDao.updatePoint(test);
-//        	    }
-//        	
-//        	
-//                }
-//            
-//
-//            // 登録完了画面へ
-//            return "test_regist_done.jsp";
-//        }
-//    
-//
-//        return "test_regist.jsp";
-//    }
-//    
-//    
-//}
-//
