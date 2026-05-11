@@ -48,7 +48,7 @@
 			
 			            	<div class="d-flex flex-column">
 			              		<label class="form-label mb-1" for="subject">科目</label>
-			              		<select id="subject" name="subject" class="form-select form-select-sm" style="min-width:260px;">
+			              		<select id="subject" name="f3" class="form-select form-select-sm" style="min-width:260px;">
 			                		<option value="">--------</option>
 			                		<c:forEach var="subject" items="${subjects}">
 			                  			<option value="${subject.cd}" <c:if test="${subject.cd == f3 }">selected</c:if>>${subject.name }</option>
