@@ -36,9 +36,7 @@
                         <select class="form-select" name="f2" style="width:120px;">
                             <option value="">--------</option>
                             <c:forEach var="classNum" items="${class_num_set}">
-                                <option value="${classNum}" <c:if test="${classNum == f2}">selected</c:if>>
-                                    ${classNum}
-                                </option>
+                                <option value="${classNum}" <c:if test="${classNum == f2}">selected</c:if>>${classNum}</option>
                             </c:forEach>
                         </select>
                     </div>
@@ -49,9 +47,7 @@
                         <select class="form-select" name="f3" style="width:250px;">
                             <option value="">--------</option>
                             <c:forEach var="subject" items="${subjects}">
-                                <option value="${subject.cd}" <c:if test="${subject.cd == f3}">selected</c:if>>
-                                    ${subject.name}
-                                </option>
+                                <option value="${subject.cd}" <c:if test="${subject.cd == f3}">selected</c:if>>${subject.name}</option>
                             </c:forEach>
                         </select>
                     </div>
@@ -62,9 +58,7 @@
                         <select class="form-select" name="f4" style="width:120px;">
                             <option value="">--------</option>
                             <c:forEach var="time" items="${times}">
-                                <option value="${time}" <c:if test="${time == f4}">selected</c:if>>
-                                    ${time}
-                                </option>
+                                <option value="${time}" <c:if test="${time == f4}">selected</c:if>>${time}</option>
                             </c:forEach>
                         </select>
                     </div>
