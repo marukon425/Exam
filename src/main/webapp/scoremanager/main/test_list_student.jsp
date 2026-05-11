@@ -108,6 +108,7 @@
 								<th>科目コード</th>
 								<th>回数</th>
 								<th>点数</th>
+								<th></th>
 		                 	</tr>
 		                 </thead>
 		                 <thead>
@@ -116,7 +117,8 @@
 			                         <td>${test.subjectName}</td>
 			                         <td>${test.subjectCd }</td>
 			                         <td>${test.no }</td>
-			                         <td>${test.point}</td>					
+			                         <td>${test.point}</td>	
+									 <td><a href="TestListStudentDelete.action?student_No=${student.no}&subject_Cd=${test.subjectCd}&no=${test.no}">削除</a></td>
 			                     </tr>
 			                 </c:forEach>
 						</thead>
