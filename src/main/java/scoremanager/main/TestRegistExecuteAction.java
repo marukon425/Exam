@@ -60,10 +60,6 @@ public class TestRegistExecuteAction extends Action {
 		String subjectCdParam = request.getParameter("subject") != null ? request.getParameter("subject").trim() : null;
 		String countStr = request.getParameter("count") != null ? request.getParameter("count").trim() : null;
 
-
-        String subjectCdParam = request.getParameter("subject");
-        String countStr = request.getParameter("count");
-
         // 値の調整（hidden から取れなければフィルタの f3, f4 を使う）
         String subjectCd = (subjectCdParam != null) ? subjectCdParam : f3;
         String finalCountStr = (countStr != null) ? countStr : f4;
