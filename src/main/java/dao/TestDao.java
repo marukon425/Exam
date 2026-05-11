@@ -104,10 +104,10 @@ public class TestDao extends Dao {
     }
 
 	public boolean upsertPoint(Test test) throws Exception {
-	    String sql = "INSERT INTO test (student_no, subject_cd, school_cd, no, point, class_num) " +
-	                 "VALUES (?, ?, ?, ?, ?, ?) " +
-	                 "ON CONFLICT (student_no, subject_cd, school_cd, no) " +
-	                 "DO UPDATE SET point = EXCLUDED.point, class_num = EXCLUDED.class_num";
+	    String sql = "merge into test " +
+	             "(student_no, subject_cd, school_cd, no, point, class_num) " +
+	             "key (student_no, subject_cd, school_cd, no) " +
+	             "values (?, ?, ?, ?, ?, ?)";
 
 	    try (Connection connection = getConnection();
 	         PreparedStatement statement = connection.prepareStatement(sql)) {
