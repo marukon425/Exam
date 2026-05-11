@@ -30,7 +30,7 @@
                 </div>
                 <div class="col d-flex align-items-center justify-content-center mx-2 rounded shadow"
                     style="height: 10rem; background-color: #bbd;">
-                    <a href="/point/scoremanager/main/SubjectList.action">科目管理</a>
+                    <a href="${pageContext.request.contextPath}/scoremanager/main/SubjectList.action">科目管理</a>
                 </div>
                 <!-- 
                 <div class="col d-flex align-items-center justify-content-center mx-2 rounded shadow"
