@@ -29,7 +29,7 @@ public class LoginExecuteAction extends Action {
                 System.out.println(customer.isAuthenticated());
                 session.setAttribute("user", customer);
                 session.setAttribute("teacher", customer);
-                return "./main/menu.jsp";
+                return "/scoremanager/main/menu.jsp";
 
             }
 
