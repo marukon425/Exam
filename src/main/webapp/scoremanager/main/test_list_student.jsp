@@ -48,7 +48,7 @@
 			
 			            	<div class="d-flex flex-column">
 			              		<label class="form-label mb-1" for="subject">科目</label>
-			              		<select id="subject" name="subject" class="form-select form-select-sm" style="min-width:260px;">
+			              		<select id="subject" name="f3" class="form-select form-select-sm" style="min-width:260px;">
 			                		<option value="">--------</option>
 			                		<c:forEach var="subject" items="${subjects}">
 			                  			<option value="${subject.cd}" <c:if test="${subject.cd == f3 }">selected</c:if>>${subject.name }</option>
@@ -83,7 +83,7 @@
 		        				<label class="form-label mb-1" for="studentId">学生番号</label>
 		        				<input id="studentId" name="f4" type="text" class="form-control form-control-sm" 
 		               					placeholder="学生番号を入力してください" 
-		               					value="${fn:escapeXml(param.studentId)}" 
+		               					value="${f4}" 
 		               					style="min-width:220px;" required />
 		      				</div>
 		      				<div class="d-flex align-items-end">
@@ -108,6 +108,7 @@
 								<th>科目コード</th>
 								<th>回数</th>
 								<th>点数</th>
+								<th></th>
 		                 	</tr>
 		                 </thead>
 		                 <thead>
@@ -116,7 +117,8 @@
 			                         <td>${test.subjectName}</td>
 			                         <td>${test.subjectCd }</td>
 			                         <td>${test.no }</td>
-			                         <td>${test.point}</td>					
+			                         <td>${test.point}</td>		
+			                         <td><a href="TestListStudentDelete.action?student_No=${student.no}&subject_Cd=${test.subjectCd}&no=${test.no}">削除</a></td>			
 			                     </tr>
 			                 </c:forEach>
 						</thead>
