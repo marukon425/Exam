@@ -63,6 +63,7 @@
                 <button class="btn btn-secondary" id="filter-button" style="margin-left:20px;">検索</button>
               </div>
             </form>
+            <div style="border:none;color:#FFCC00;">${error}</div>
           </div>
         </div>
         
