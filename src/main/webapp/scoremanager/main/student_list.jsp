@@ -12,7 +12,7 @@
         <section class="me-4">
             <h2 class="h3 mb-3 fw-norma bg-secondary bg-opacity-10 py-2 px-4">学生管理</h2>
             <div class="my-2 text-end px-4">
-                <a href="StudentCreate.action">新規登録</a>
+                <button id="csv-download">csvをダウンロードする</button><a href="StudentCreate.action">新規登録</a>
             </div>
             <form method="get">
                 <div class="row border mx-3 mb-3 py-2 align-items-center rounded" id="filter">
@@ -69,11 +69,11 @@
                         </tr>
                         <c:forEach var="student" items="${students }">
                             <tr>
-                                <td>${student.entYear }</td>
-                                <td>${student.no }</td>
-                                <td>${student.name }</td>
-                                <td>${student.classNum }</td>
-                                <td class="text-center">
+                                <td class="stu-ent">${student.entYear }</td>
+                                <td class="stu-no">${student.no }</td>
+                                <td class="stu-name">${student.name }</td>
+                                <td class="stu-class">${student.classNum }</td>
+                                <td class="text-center stu-at">
                                     <%-- 在学フラグがたっている場合「○」それ以外は「×」を表示 --%>
                                     <c:choose>
                                         <c:when test="${student.isAttend() }">
@@ -94,5 +94,57 @@
                 </c:otherwise>
             </c:choose>
         </section>
+	<script>
+	 function downloadCSV() {
+		 //CSVデータ
+		 const filename = "student_list.csv"
+			 // テキストを抽出
+		const stuentent = document.querySelectorAll(".stu-ent");
+		const stuno     = document.querySelectorAll(".stu-no");
+		const stuname   = document.querySelectorAll(".stu-name");
+		const stuclass  = document.querySelectorAll(".stu-class");
+		const stuatt    = document.querySelectorAll(".stu-at");
+			 
+             var students = [];
+             for (let i = 0; i < stuentent.length; i++){
+                 var studentls = [];
+                 studentls.push(
+                         	// 前後左右の空白を削除してプッシュ
+                		    stuentent[i].textContent.trim(),
+                		    stuno[i].textContent.trim(),
+                		    stuname[i].textContent.trim(),
+                		    stuclass[i].textContent.trim(),
+                		    //空白・改行を全部除去
+                		    stuatt[i].textContent.trim().replace(/\s+/g, "")
+                		);
+                 students.push(studentls)
+                 }
+	  	 const head = ["入学年度", "学生番号", "氏名", "クラス", "在学中"];
+			 // csv用に成形
+			 const content = [head, ...students]
+		    .map(row => row.join(","))
+		    .join("\n");
+		 //BOMを付与
+		 const bom = new Uint8Array([0xef, 0xbb, 0xbf])
+		 
+		 //BlobからオブジェクトURLを作成
+		 const blob = new Blob([bom, content], { type: "text/csv" })
+
+		 //リンク先にダウンロード用リンクを指定する
+		 const link = document.createElement('a')
+		 link.download = filename
+		 link.href = URL.createObjectURL(blob)
+		 link.click()
+
+		 //createObjectURLで作成したオブジェクトURLを開放する
+		 URL.revokeObjectURL(link.href)
+		}
+
+		//ボタンを取得する
+		const downloadBtn = document.getElementById("csv-download");
+		//ボタンがクリックされたら「downloadCSV」を実行する
+		downloadBtn.addEventListener("click", downloadCSV, false);
+   
+    </script>
     </c:param>
 </c:import>
