@@ -68,7 +68,7 @@ public class TestListSubjectExecuteAction extends Action {
                 "error",
                 "入学年度とクラスと科目を選択してください"
             );
-            return "test_list_subject.jsp";
+            return "test_list.jsp";
         }
 
         int entYear = Integer.parseInt(f1);

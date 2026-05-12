@@ -64,8 +64,6 @@ public class TestListStudentExecuteAction extends Action {
         Student student = studentDao.get(studentNo);
 
 		if (tests == null || studentNo.isEmpty()) {
-			// 学生が存在しない場合
-			request.setAttribute("error", "このフィールドを入力してください ");
 			return "test_list.jsp";
 		}
 		
