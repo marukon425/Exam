@@ -12,13 +12,9 @@
                 学生情報変更
             </h2>
 
-            <p class="alert alert-success px-4">
-                変更が完了しました。
-            </p>
+            <p><label style="width:100%; background-color:#8CC3A9; text-align:center; margin: 1px 0px 10%; ">変更が完了しました</label></p>
 
-            <div class="mt-3 px-4">
-                <a href="StudentList.action">学生一覧</a>
-            </div>
+            <a href="StudentList.action">学生一覧</a>
 
         </section>
 
