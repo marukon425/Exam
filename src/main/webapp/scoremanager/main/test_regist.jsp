@@ -12,6 +12,7 @@
             <h2 class="h3 mb-3 fw-normal bg-secondary bg-opacity-10 py-2 px-4">
                 成績管理
             </h2>
+                <button id="csv-download" style="">csvをダウンロード</button>
  
             <!-- ▼ フィルタ部分 -->
             <form action="TestRegist.action" method="get">
@@ -41,8 +42,8 @@
  
                     <!-- 科目 -->
                     <div class="col-4">
-                        <label class="form-label">科目</label>
-                        <select class="form-select" name="f3" style="width:250px;">
+                        <label  class="form-label">科目</label>
+                        <select id="subject" class="form-select" name="f3" style="width:250px;">
                             <option value="">--------</option>
                             <c:forEach var="subject" items="${subjects}">
                                 <option value="${subject.cd}" <c:if test="${subject.cd == f3}">selected</c:if>>${subject.name}</option>
@@ -110,11 +111,11 @@
                             <tbody>
                                 <c:forEach var="test" items="${tests}">
                                     <tr class="border-bottom">
-                                        <td>${test.entYear}</td>
-                                        <td>${test.classNum}</td>
-                                        <td>${test.studentNo}</td>
-                                        <td>${test.studentName}</td>
-                                        <td>
+                                        <td class="stu-ent">${test.entYear}</td>
+                                        <td class="stu-class">${test.classNum}</td>
+                                        <td class="stu-no">${test.studentNo}</td>
+                                        <td class="stu-name">${test.studentName}</td>
+                                        <td class="stu-point">
                                             <!-- ★ 学生番号で一意にする ★ -->
                                             <input type="text"
                                                    class="form-control"
@@ -147,6 +148,59 @@
             </c:choose>
  
         </section>
+	<script>
+	 function downloadCSV() {
+		 const subject = document.getElementById("id").value;
+		 //CSVデータ
+		 const filename = `${subject}_test_list.csv`
+			 // テキストを抽出
+		const stuentent = document.querySelectorAll(".stu-ent");
+		const stuno     = document.querySelectorAll(".stu-no");
+		const stuname   = document.querySelectorAll(".stu-name");
+		const stuclass  = document.querySelectorAll(".stu-class");
+		const stuatt    = document.querySelectorAll(".stu-point input");
+			 
+             var students = [];
+             for (let i = 0; i < stuentent.length; i++){
+                 var studentls = [];
+                 studentls.push(
+                         	// 前後左右の空白を削除してプッシュ
+                		    stuentent[i].textContent.trim(),
+                		    stuno[i].textContent.trim(),
+                		    stuname[i].textContent.trim(),
+                		    stuclass[i].textContent.trim(),
+                		    //空白・改行を全部除去
+                		    stuatt[i].value
+                		);
+                 students.push(studentls)
+                 }
+	  	 const head = ["入学年度", "クラス", "氏名", "学生番号", "点数"];
+			 // csv用に成形
+			 const content = [head, ...students]
+		    .map(row => row.join(","))
+		    .join("\n");
+		 //BOMを付与
+		 const bom = new Uint8Array([0xef, 0xbb, 0xbf])
+		 
+		 //BlobからオブジェクトURLを作成
+		 const blob = new Blob([bom, content], { type: "text/csv" })
+
+		 //リンク先にダウンロード用リンクを指定する
+		 const link = document.createElement('a')
+		 link.download = filename
+		 link.href = URL.createObjectURL(blob)
+		 link.click()
+
+		 //createObjectURLで作成したオブジェクトURLを開放する
+		 URL.revokeObjectURL(link.href)
+		}
+
+		//ボタンを取得する
+		const downloadBtn = document.getElementById("csv-download");
+		//ボタンがクリックされたら「downloadCSV」を実行する
+		downloadBtn.addEventListener("click", downloadCSV, false);
+   
+    </script>
     </c:param>
 </c:import>
  
