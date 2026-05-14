@@ -9,10 +9,8 @@
 
   <c:param name="content">
     <section class="me-4">
-      <h2 class="h3 mb-3 fw-normal bg-secondary bg-opacity-10 py-2 px-4">
-        成績一覧（科目）
-      </h2>
-				    <div class="border rounded p-3 mb-3" id="grade-filter">
+      <h2 class="h3 mb-3 fw-norma bg-secondary bg-opacity-10 py-2 px-4">成績一覧（科目）</h2>
+			<div class="border rounded p-3 mb-3" id="grade-filter">
 		
 		      	<!-- 上段: 科目情報（ラベル左、コントロール右 横並び） -->
 		      	<div class="row align-items-center mb-3">
@@ -62,7 +60,6 @@
 			              		<button class="btn btn-secondary" id="filter-button" style="margin-left:20px;">検索</button>
 			           		</div>
 			          	</form>
-			          	<div style="border:none;color:#FFCC00;">${error}</div>
 		       		</div>
 		       	</div>
 		      

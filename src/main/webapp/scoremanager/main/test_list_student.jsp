@@ -84,7 +84,7 @@
 		        				<input id="studentId" name="f4" type="text" class="form-control form-control-sm" 
 		               					placeholder="学生番号を入力してください" 
 		               					value="${f4}" 
-		               					style="min-width:220px;" required />
+		               					style="min-width:220px;"/>
 		      				</div>
 		      				<div class="d-flex align-items-end">
 		        				<button type="submit" class="btn btn-secondary" style="margin-left: 30px;">検索</button>
@@ -102,26 +102,24 @@
 		   <c:choose>
 		       <c:when test="${tests.size() > 0}">
 					<table class="table mx-3">
-						<thead class="table-light border-bottom">
-		                 	<tr>
-		                     	<th>科目名</th>
-								<th>科目コード</th>
-								<th>回数</th>
-								<th>点数</th>
-								<th></th>
-		                 	</tr>
-		                 </thead>
-		                 <thead>
-			                 <c:forEach var="test" items="${tests}">
-			                     <tr class="border-bottom">
-			                         <td>${test.subjectName}</td>
-			                         <td>${test.subjectCd }</td>
-			                         <td>${test.no }</td>
-			                         <td>${test.point}</td>		
-			                         <td><a href="TestListStudentDelete.action?student_No=${student.no}&subject_Cd=${test.subjectCd}&no=${test.no}">削除</a></td>			
-			                     </tr>
-			                 </c:forEach>
-						</thead>
+	                 	<tr>
+	                     	<th>科目名</th>
+							<th>科目コード</th>
+							<th>回数</th>
+							<th>点数</th>
+							<th></th>
+	                 	</tr>
+
+		                 <c:forEach var="test" items="${tests}">
+		                     <tr class="border-bottom">
+		                         <td>${test.subjectName}</td>
+		                         <td>${test.subjectCd }</td>
+		                         <td>${test.no }</td>
+		                         <td>${test.point}</td>		
+		                         <td><a href="TestListStudentDelete.action?student_No=${student.no}&subject_Cd=${test.subjectCd}&no=${test.no}">削除</a></td>			
+		                     </tr>
+		                 </c:forEach>
+
 	         		</table>
 		       </c:when> 
 		       <c:otherwise>

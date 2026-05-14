@@ -94,7 +94,7 @@
 
             <!-- 戻る -->
             <div class="mt-3">
-</a>
+                <a href="StudentList.action">戻る</a>
             </div>
 
         </section>

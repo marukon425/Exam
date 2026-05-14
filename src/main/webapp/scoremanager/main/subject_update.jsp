@@ -33,6 +33,7 @@
                         ${cd}
                     </span>
                 </div>
+                <div style="color: #FFCC00;">${error_subject}</div>
 
                 <!-- 科目名 -->
                 <div class="mb-2">
@@ -45,6 +46,7 @@
                     <input type="text"
                            name="name"
                            value="${name}"
+                           placeholder="科目名を入力してください"
                            maxlength="20"
                            required
                            class="form-control">
