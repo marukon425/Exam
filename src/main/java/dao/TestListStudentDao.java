@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import bean.School;
 import bean.Test;
 
 public class TestListStudentDao extends Dao {
@@ -16,7 +17,7 @@ public class TestListStudentDao extends Dao {
 			"select t.student_no, t.subject_cd, s.name as subject_name, t.no, t.point " +
 			"from test t " +
 			"join subject s on t.subject_cd = s.cd " +
-			"where t.student_no = ? " +
+			"where t.student_no = ? and t.school_cd = ? " +
 			"order by t.subject_cd asc, t.no asc";
 
 		public Test get(String student_No, String subject_Cd, int no) throws Exception {
@@ -104,7 +105,7 @@ public class TestListStudentDao extends Dao {
 	}
 
 	// 学生番号をもとに成績一覧を取得
-	public List<Test> filter(String StudentNo) throws Exception {
+	public List<Test> filter(String StudentNo,School school) throws Exception {
 		// リストを初期化
 		List<Test> list = new ArrayList<>();
 		Connection connection = getConnection();
@@ -116,6 +117,8 @@ public class TestListStudentDao extends Dao {
 			statement = connection.prepareStatement(baseSql);
 			//学生番号セット
 			statement.setString(1, StudentNo);
+			statement.setString(2, school.getCd());
+			
 			// sqlを実行
 			rSet = statement.executeQuery();
 			// リストへの格納処理を実行

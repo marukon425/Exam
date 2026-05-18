@@ -59,9 +59,9 @@ public class TestListStudentExecuteAction extends Action {
         //リクエストパラメータの取得
         String studentNo = request.getParameter("f4");// 選択された学生番号
 		
-        tests = tDao.filter(studentNo);
+        tests = tDao.filter(studentNo,teacher.getSchool());
         StudentDao studentDao = new StudentDao();
-        Student student = studentDao.get(studentNo);
+        Student student = studentDao.testlistget(studentNo,teacher.getSchool());
 
 		if (tests == null || studentNo.isEmpty()) {
 			return "test_list.jsp";
